@@ -1,2 +1,2 @@
 verbose=2
-input=../ast.txt
+input=../examples/ast.txt
