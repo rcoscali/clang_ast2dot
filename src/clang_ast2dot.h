@@ -14,6 +14,8 @@
 
 #include <boost/program_options.hpp>
 
+#include <boost/regex.hpp>
+
 using namespace boost;
 namespace po = boost::program_options;
 namespace postyle = po::command_line_style;
@@ -23,16 +25,19 @@ namespace clang_ast2dot
   class Ast2DotMain
   {
   public:
-    Ast2DotMain(int argc, char *argv[]);
+    Ast2DotMain(int, char *[]);
     virtual ~Ast2DotMain();
 
     po::variables_map& vm(void);
-    int do_main(int opt_ind);
-
+    int do_main(int);
+    bool create_graph(std::string&, std::string&, int);
+    
   private:
     int _argc;
     std::vector<std::pair<int, std::string> > _argv;
     po::variables_map _vm;
+    boost::regex _re;
+    boost::smatch _what;
   };
   
 } // namespace clang_ast2dot
