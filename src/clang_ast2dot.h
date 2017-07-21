@@ -30,7 +30,7 @@ namespace clang_ast2dot
 
     po::variables_map& vm(void);
     int do_main(int);
-    bool create_graph(std::string&, std::string&, int);
+    bool create_graph(std::string&, std::string&, std::string&, int);
     
   private:
     int _argc;
