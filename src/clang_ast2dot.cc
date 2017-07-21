@@ -1,261 +1,312 @@
-/*
+/**
  * @file clang_ast2dot.cc
  */
 
-#include <string.h>
+
+/**
+ * C System headers
+ *
+ * string.h was used for memcpy
+ */
+//#include <string.h>
+
+/**
+ * C++ System headers
+ *
+ * cstdlib 
+ * fstream for ifstream, ofstream, getline, etc...
+ * iostream for cin, cout, etc...
+ */
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-#include<boost/tokenizer.hpp>
+/**
+ * Boost tokenizer for parsing ast dump lines
+ */
+#include <boost/tokenizer.hpp>
 
+// Include our defs
 #include "clang_ast2dot.h"
 
+/*
+ * Constants definitions
+ */
+// Version string
 #define AST2DOT_VERSION_STRING                  "0.0.1"
+// System config file
 #define AST2DOT_SYSTEM_CONFIG_FILE_PATH         "/etc/clang_ast2dotrc"
+// User config file
 #define AST2DOT_HOME_CONFIG_FILE_PATH           std::string(std::getenv("HOME")).append("/.clang_ast2dotrc").c_str()
+// Local directory config file
 #define AST2DOT_LOCAL_CONFIG_FILE_PATH          "./.clang_ast2dotrc"
 
+// Verbose level
 static int opt_verbose = 0;
 
+// Use std and boost namespaces
 using namespace std;
 using namespace boost;
 
+/*
+ * Escape special chars for nice handling in graphviz
+ *
+ * @param str   string in which to escape characters
+ *
+ * @return the string with special dot characters escaped
+ */
 static std::string&
-escaped_dot_string(std::string& str) {
+escaped_dot_string(std::string& str)
+{
+  // Found character position
   size_t pos = 0;
+  // Length of escaped sequence
   size_t ilen = 0;
-  do {
-    std::cerr << "[escaped_dot_string] str = '" << str << "'\n";
-    pos = str.find_first_of("<>\\ ", pos + ilen);
-    if (pos != std::string::npos)
-      switch (str[pos]) {
-      default:
-        break;
-      case '<':
-        str.replace(pos, 1, "&lt;");
-        ilen = 4;
-        break;
-      case '>':
-        str.replace(pos, 1, "&gt;");
-        ilen = 4;
-        break;
-      case ' ':
-        str.replace(pos, 1, "&nbsp;");
-        ilen = 6;
-        break;
-      case '\\':
-        str = str.insert(pos, 1, '\\');
-        ilen = 1;
-        break;
-      }
-    std::cerr << "[escaped_dot_string] pos = " << pos << "\n";
-  } while (pos != std::string::npos);
+  
+  do
+    {
+      std::cerr << "[escaped_dot_string] str = '" << str << "'\n";
+      pos = str.find_first_of("<>\\ ", pos + ilen);
+      if (pos != std::string::npos)
+        switch (str[pos]) {
+        default:
+          break;
+        case '<':
+          str.replace(pos, 1, "&lt;");
+          ilen = 4;
+          break;
+        case '>':
+          str.replace(pos, 1, "&gt;");
+          ilen = 4;
+          break;
+        case ' ':
+          str.replace(pos, 1, "&nbsp;");
+          ilen = 6;
+          break;
+        case '\\':
+          str = str.insert(pos, 1, '\\');
+          ilen = 1;
+          break;
+        }
+      
+      std::cerr << "[escaped_dot_string] pos = " << pos << "\n";
+    }
+  while (pos != std::string::npos);
 
   return str;
 }
 
-namespace clang_ast2dot {
-  Ast2DotMain::Ast2DotMain(int argc, char *argv[]) {
+/*
+ * clang_ast2dot namespace
+ */
+namespace clang_ast2dot
+{
+  /*
+   * Ast2DotMain constructor
+   * Instanciate main class for tool
+   *
+   * @param argc        number of command line options
+   * @param argv        array of string containing command line options
+   */
+  Ast2DotMain::Ast2DotMain(int argc, char *argv[])
+  {
+    // Init argc
     _argc = argc;
+
+    // copy command line options in class vector member
     for (int i = 0; i < _argc; i++)
       _argv.push_back(std::make_pair(i, std::string(argv[i])));
+
+    // init regular expression for parsing the tree relations
     _re = boost::regex("^((\\| )|( \\|)|(  ))*(\\|-|`-)$");
   }
 
-  Ast2DotMain::~Ast2DotMain() {
-    /* ... */
+  /*
+   * Virtual destructor
+   */
+  Ast2DotMain::~Ast2DotMain()
+  {
   }
 
   po::variables_map& Ast2DotMain::vm(void) {
     return _vm;
   }
 
-  bool Ast2DotMain::create_graph(std::string& inbuf,
-                                 std::string& parent_name,
-                                 std::string& scstr,
-                                 int level) {
+  /*
+   *
+   */
+  
+
+  /*
+   *
+   */
+  bool
+  Ast2DotMain::create_dot()
+  {
     bool goes_on = true;
     bool generated = false;
 
     // While not end of file
-    while (!std::cin.eof() && goes_on) {
-      if (inbuf.empty())
-        // Read a line
-        std::getline(std::cin, inbuf);
+    while (!std::cin.eof() && goes_on)
+      {
+	if (inbuf = read_ast_line())
+	  {
 
-      if (opt_verbose >= 4)
-        std::cerr << "[do_main] line (" << inbuf.length() << "): >" << inbuf
-                  << "<\n";
-
-      // If line not empty
-      if (!inbuf.empty()) {
-        // Current position and last position for replacing
-        size_t curpos = 0;
-        size_t lastpos = 0;
-
-        // If not root (scstr empty && line doesn't start with a className), add quotes for child/sibling preprend string
-        if (scstr.empty() && !(inbuf[0] >= 'A' && inbuf[0] <= 'Z')) {
-          inbuf.insert(0, 1, '"');
-          lastpos = inbuf.find_first_not_of("|- `", 1);
-          inbuf.insert(lastpos, "\" ", 2);
-        }
-
-        if (opt_verbose >= 4)
-          std::cerr << "[do_main] line (" << inbuf.length() << ") >"
-                    << inbuf << "<\n";
-
-        /*
-         * We quote AST special quotes (<<<...>>>, <<...>> and <...>) for
-         * having the quoted string in one token
-         */
-        // Search for some '<<<' to replace
-        if ((curpos = inbuf.find("<<<")) != std::string::npos) {
-          if (opt_verbose >= 4)
-            std::cerr
-              << "[do_main] Processing '<<<...>>>' (3x) enclosed fields\n";
-          // Insert a dbl quote at start
-          inbuf.replace(curpos, 3, "\"<<<");
-          // Also insert a dbl quote at end for tokenizing the whole string
-          inbuf.replace((lastpos = inbuf.find(">>>", curpos + 4)), 3,
-                        ">>>\"");
-          if (opt_verbose >= 4)
-            std::cerr << "[do_main] Field "
-                      << inbuf.substr(curpos, lastpos + 1)
-                      << " processed\n";
-        }
-        // Search for some '<<' to replace
-        else if ((curpos = inbuf.find("<<")) != std::string::npos) {
-          if (opt_verbose >= 4)
-            std::cerr
-              << "[do_main] Processing '<<...>>' (2x) enclosed fields\n";
-          // Insert a dbl quote at start
-          inbuf.replace(curpos, 2, "\"<<");
-          // Also insert a dbl quote at end for tokenizing the whole string
-          inbuf.replace((lastpos = inbuf.find(">>", curpos + 3)), 2,
-                        ">>\"");
-          if (opt_verbose >= 4)
-            std::cerr << "[do_main] Field "
-                      << inbuf.substr(curpos, lastpos + 1)
-                      << " processed\n";
-        }
-        // Or finally, search for some '<' to replace
-        else if ((curpos = inbuf.find("<")) != std::string::npos) {
-          if (opt_verbose >= 4)
-            std::cerr
-              << "[do_main] Processing '<...>' (1x) enclosed fields\n";
-          // Insert a dbl quote at start
-          inbuf.replace(curpos, 1, "\"<");
-          // Also insert a dbl quote at end for tokenizing the whole string
-          inbuf.replace((lastpos = inbuf.find(">", curpos + 2)), 1,
-                        ">\"");
-          if (opt_verbose >= 4)
-            std::cerr << "[do_main] Field "
-                      << inbuf.substr(curpos, lastpos + 1)
-                      << " processed\n";
-        }
-
-	/*
-	 * let's start the real tokenizing work
-	 */
-        // Init separator
-        boost::escaped_list_separator<char> f("\\", " ", "\\\"");
-        // And tokenizer
-        boost::tokenizer < boost::escaped_list_separator<char> > tok(inbuf, f);
-        // Start iteration
-        boost::tokenizer<boost::escaped_list_separator<char> >::iterator it = tok.begin();
-
-        int new_level = level;
-        std::string vertex_name;        // current vertex name string
-        std::string token_scstr;        // sibling/child preprend string
-
-        // If not at root
-        if (!(inbuf[0] >= 'A' && inbuf[0] <= 'Z')) {
-          // Get the child/Sibling string
-          token_scstr = (*it);
-          if (opt_verbose >= 4)
-            std::cerr << "[do_main] scstr: '" << token_scstr << "'\n";
-          // Get next token
-          it++;
-          new_level = token_scstr.length() / 2;
-          if (new_level > level)
-            create_graph(token_name, )
-              if (boost::regex_match(token_scstr, _what, _re)) {
-                std::cerr << "** Match found **\n   Sub-Expressions:\n";
-                for(int iw = 0; iw < _what.size(); ++iw)
-                  std::cout << "      $" << iw << " = '" << _what[iw] << "'\n";
-              }
-        }
-	else
-	  token_scstr = scstr;
-
-        // If not at end of tokens
-        if (it != tok.end())
-          do {
-            // Read vertex name from AST class name
-            std::string token_name = (*it);
+	    /*
+           * We quote AST special quotes (<<<...>>>, <<...>> and <...>) for
+           * having the quoted string in one token
+           */
+          // Search for some '<<<' to replace
+          if ((curpos = inbuf.find("<<<")) != std::string::npos) {
             if (opt_verbose >= 4)
-              std::cerr << "[do_main] token_name: '" << token_name
-                        << "'\n";
+              std::cerr
+                << "[do_main] Processing '<<<...>>>' (3x) enclosed fields\n";
+            // Insert a dbl quote at start
+            inbuf.replace(curpos, 3, "\"<<<");
+            // Also insert a dbl quote at end for tokenizing the whole string
+            inbuf.replace((lastpos = inbuf.find(">>>", curpos + 4)), 3,
+                          ">>>\"");
+            if (opt_verbose >= 4)
+              std::cerr << "[do_main] Field "
+                        << inbuf.substr(curpos, lastpos + 1)
+                        << " processed\n";
+          }
+          // Search for some '<<' to replace
+          else if ((curpos = inbuf.find("<<")) != std::string::npos) {
+            if (opt_verbose >= 4)
+              std::cerr
+                << "[do_main] Processing '<<...>>' (2x) enclosed fields\n";
+            // Insert a dbl quote at start
+            inbuf.replace(curpos, 2, "\"<<");
+            // Also insert a dbl quote at end for tokenizing the whole string
+            inbuf.replace((lastpos = inbuf.find(">>", curpos + 3)), 2,
+                          ">>\"");
+            if (opt_verbose >= 4)
+              std::cerr << "[do_main] Field "
+                        << inbuf.substr(curpos, lastpos + 1)
+                        << " processed\n";
+          }
+          // Or finally, search for some '<' to replace
+          else if ((curpos = inbuf.find("<")) != std::string::npos) {
+            if (opt_verbose >= 4)
+              std::cerr
+                << "[do_main] Processing '<...>' (1x) enclosed fields\n";
+            // Insert a dbl quote at start
+            inbuf.replace(curpos, 1, "\"<");
+            // Also insert a dbl quote at end for tokenizing the whole string
+            inbuf.replace((lastpos = inbuf.find(">", curpos + 2)), 1,
+                          ">\"");
+            if (opt_verbose >= 4)
+              std::cerr << "[do_main] Field "
+                        << inbuf.substr(curpos, lastpos + 1)
+                        << " processed\n";
+          }
 
-            // Forwards to next token
+          /*
+           * let's start the real tokenizing work
+           */
+          // Init separator
+          boost::escaped_list_separator<char> f("\\", " ", "\\\"");
+          // And tokenizer
+          boost::tokenizer < boost::escaped_list_separator<char> > tok(inbuf, f);
+          // Start iteration
+          boost::tokenizer<boost::escaped_list_separator<char> >::iterator it = tok.begin();
+
+          int new_level = level;
+          std::string vertex_name;        // current vertex name string
+          std::string token_scstr;        // sibling/child preprend string
+
+          // If not at root
+          if (!(inbuf[0] >= 'A' && inbuf[0] <= 'Z')) {
+            // Get the child/Sibling string
+            token_scstr = (*it);
+            if (opt_verbose >= 4)
+              std::cerr << "[do_main] scstr: '" << token_scstr << "'\n";
+            // Get next token
             it++;
-            if (it == tok.end())
-              break;
+            new_level = token_scstr.length() / 2;
+            if (new_level > level)
+              create_graph(token_name, )
+                if (boost::regex_match(token_scstr, _what, _re)) {
+                  std::cerr << "** Match found **\n   Sub-Expressions:\n";
+                  for(int iw = 0; iw < _what.size(); ++iw)
+                    std::cout << "      $" << iw << " = '" << _what[iw] << "'\n";
+                }
+          }
+          else
+            token_scstr = scstr;
 
-            // Read vertex name suffix from AST class instance address
-            std::string token_address = (*it);
-            if (opt_verbose >= 4)
-              std::cerr << "[do_main] token_address: '"
-                        << token_address << "'\n";
-
-            // Compute vertex name
-            vertex_name = token_name.append(
-                                            std::string("_").append(token_address));
-            // Create vertex in dot file
-            std::cout << "    " << vertex_name
-                      << " [shape=record,style=filled,fillcolor=lightgrey,label=\"{ "
-                      << token_name << " ";
-
-            // Read all remaining AST instance properties
+          // If not at end of tokens
+          if (it != tok.end())
             do {
+              // Read vertex name from AST class name
+              std::string token_name = (*it);
+              if (opt_verbose >= 4)
+                std::cerr << "[do_main] token_name: '" << token_name
+                          << "'\n";
+
               // Forwards to next token
               it++;
-              if (it != tok.end()) {
-                std::string token_prop = (*it);
-                if (opt_verbose >= 4)
-                  std::cerr << "[do_main] token: '" << token_prop
-                            << "'\n";
+              if (it == tok.end())
+                break;
 
-                std::cout << "|" << escaped_dot_string(token_prop)
-                          << " ";
+              // Read vertex name suffix from AST class instance address
+              std::string token_address = (*it);
+              if (opt_verbose >= 4)
+                std::cerr << "[do_main] token_address: '"
+                          << token_address << "'\n";
+
+              // Compute vertex name
+              vertex_name = token_name.append(
+                                              std::string("_").append(token_address));
+              // Create vertex in dot file
+              std::cout << "    " << vertex_name
+                        << " [shape=record,style=filled,fillcolor=lightgrey,label=\"{ "
+                        << token_name << " ";
+
+              // Read all remaining AST instance properties
+              do {
+                // Forwards to next token
+                it++;
+                if (it != tok.end()) {
+                  std::string token_prop = (*it);
+                  if (opt_verbose >= 4)
+                    std::cerr << "[do_main] token: '" << token_prop
+                              << "'\n";
+
+                  std::cout << "|" << escaped_dot_string(token_prop)
+                            << " ";
+                }
+              } while (it != tok.end());
+
+              // Create vertex in dot file
+              std::cout << "}\"];\n";
+
+              // At root, recurs if needed (while sibling == "|-")
+              if (token_scstr.empty()) {
+                goes_on = create_graph(vertex_name, token_scstr,
+                                       level + 1);
+                parent_name = vertex_name;
               }
-            } while (it != tok.end());
 
-            // Create vertex in dot file
-            std::cout << "}\"];\n";
-
-            // At root, recurs if needed (while sibling == "|-")
-            if (token_scstr.empty()) {
-              goes_on = create_graph(vertex_name, token_scstr,
-                                     level + 1);
-              parent_name = vertex_name;
-            }
-
-            // Not at root, recurs if "|-"
-            else {
-              // Create edge in dot file
-              std::cout << "    " << parent_name << " -> "
-                        << vertex_name
-                        << " [style=\"solid\",color=black,weight=100,constraint=true];\n";
-              previous_scstr = token_scstr;
+              // Not at root, recurs if "|-"
+              else {
+                // Create edge in dot file
+                std::cout << "    " << parent_name << " -> "
+                          << vertex_name
+                          << " [style=\"solid\",color=black,weight=100,constraint=true];\n";
+                previous_scstr = token_scstr;
                                         
-            } while (0);
-          }
+              } while (0);
+            }
+        }
       }
-    }
 
-    int Ast2DotMain::do_main(int opt_ind) {
+    /*
+     *
+     */
+    int Ast2DotMain::do_main(int opt_ind)
+    {
       /*
         for (std::vector<std::pair<int, std::string> >::iterator argit = _argv.begin();
         argit != _argv.end();

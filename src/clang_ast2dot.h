@@ -1,4 +1,4 @@
-/*
+/**
  * @file clang_ast2dot.h
  *
  */
@@ -6,15 +6,30 @@
 #ifndef _CLANG_AST2DOT_H_
 #define _CLANG_AST2DOT_H_
 
+/**
+ * C System headers
+ *
+ */
+
+/**
+ * C++ System headers
+ *
+ * vector for lists
+ */
+
 #include <string>
-#include <vector>
 
+/**
+ * Boost headers
+ */
 #include <boost/config.hpp>
-#include <boost/utility.hpp>                // for boost::tie
-
+#include <boost/utility.hpp>
 #include <boost/program_options.hpp>
 
-#include <boost/regex.hpp>
+/**
+ * Own headers
+ */
+#include "clang_ast_parser.h"
 
 using namespace boost;
 namespace po = boost::program_options;
@@ -30,7 +45,7 @@ namespace clang_ast2dot
 
     po::variables_map& vm(void);
     int do_main(int);
-    bool create_graph(std::string&, std::string&, std::string&, int);
+    bool create_dot();
     
   private:
     int _argc;
