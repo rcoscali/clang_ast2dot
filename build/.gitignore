@@ -1,9 +1,9 @@
+.ninja_deps
+.ninja_log
 build.ninja
 clang_ast2dot
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
-*~
-.ninja_deps
-.ninja_log
 rules.ninja
+*~
