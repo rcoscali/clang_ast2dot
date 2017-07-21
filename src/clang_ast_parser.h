@@ -32,10 +32,11 @@ namespace clang_ast2dot
     class Ast2DotParser
     {
     public:
-      Ast2DotParser();
-      ~Ast2DotParser();
+      Ast2DotParser(void);
+      ~Ast2DotParser(void);
 
-      get_vertex()
+      std::string& read_sibling_child_string(std::istream* = &std::cin);
+      void read_vertex_props(void);
 
     private:
       // Line buffer
@@ -52,9 +53,10 @@ namespace clang_ast2dot
 
       // Vertex is leaf?
       bool _is_leaf;
-    }
-  } // ! parser
-} // ! clang_ast2dot
+    };
+    
+  } // ! namespace parser
+} // ! namespace clang_ast2dot
 
 #endif /* ! _CLANG_AST_PARSER_H_ */
 
