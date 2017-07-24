@@ -31,7 +31,8 @@ namespace clang_ast2dot
               _test_parser_testfile->close();
       }
       
-      void TestParser::PrintTo(const Ast2DotParser& parser, ::std::ostream* os) {
+      void TestParser::PrintTo(const TestParser& parser, ::std::ostream* os)
+      {
           size_t pos = _test_parser_testfile->tellg();
           *os << "Test file position: " << pos << "\n";
       }
@@ -41,8 +42,8 @@ namespace clang_ast2dot
           Ast2DotParser p;
           std::string str1;
           
-          ASSERT_THROW((void)p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::EmptyScStrException);
-          
+          ASSERT_THROW((void)p.read_sibling_child_string(_test_parser_testfile),
+                       Ast2DotParser::EmptyScStrException);
       }
   }
 }

@@ -18,7 +18,7 @@ target_compile_options(gtestall PUBLIC "-std=c++11")
 target_include_directories(gtestall PRIVATE googletest/googletest)
 target_include_directories(gtestall SYSTEM BEFORE PRIVATE googletest/googletest/include)
 
-# Create static executable target gtestall
+# Create static executable target test_parser
 add_executable(test_parser tests/test_parser.cc src/clang_ast_parser.cc)
 target_compile_options(test_parser PUBLIC "-std=c++11")
 target_include_directories(test_parser PRIVATE googletest/googletest)

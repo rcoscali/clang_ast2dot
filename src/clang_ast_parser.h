@@ -41,18 +41,21 @@ namespace clang_ast2dot
             
             class EmptyScStrException : public ::std::runtime_error
             {
+              public:
               EmptyScStrException() : ::std::runtime_error("Empty ScStr String Found") {};
-                virtual ~EmptyScStrException();
+                virtual ~EmptyScStrException() {};
             };
 
             class InvalidScStrException : public ::std::runtime_error
             {
+              public:
               InvalidScStrException() : ::std::runtime_error("Invalid ScStr String Found") {};
-                virtual ~InvalidScStrException();
+                virtual ~InvalidScStrException() {};
             };
             
             class UnexpectedEofException : public ::std::runtime_error
             {
+              public:
               UnexpectedEofException() : std::runtime_error("Unexpected Eof while parsing ScStr") {};
                 virtual ~UnexpectedEofException() {};
             };

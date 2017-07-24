@@ -67,7 +67,8 @@ namespace clang_ast2dot
                 {
                     do
                         {
-                            if (c = is->get() == '|' ||
+                            c = is->get();
+                            if (c == '|' ||
                                 c == ' ' ||
                                 c == '`')
                                 _scstr.append(1, c);
@@ -76,13 +77,18 @@ namespace clang_ast2dot
                         }
                     while(c != '|' && c != ' ' && c != '`');
 
+                    if (_scstr.empty())
+                        throw Ast2DotParser::EmptyScStrException();
+
                     if ((c = is->get()) != '-')
                         throw Ast2DotParser::InvalidScStrException();
                     else
                         _scstr.append(1, '-');
                 }
+
             else
-                throw std::UnexpectedScStrException();
+                throw Ast2DotParser::UnexpectedEofException();
+            
             return _scstr;
         }
         
