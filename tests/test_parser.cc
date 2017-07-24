@@ -11,7 +11,7 @@ namespace clang_ast2dot
   {
     TestParser::TestParser()
     {
-      _TEST_FILE_NAME.assign("./test_parser.txt");
+      _TEST_FILE_NAME.assign("../tests/test_parser.txt");
       _test_parser_testfile = new std::ifstream();
     }
     
@@ -41,10 +41,26 @@ namespace clang_ast2dot
       {
           Ast2DotParser p;
           std::string str1;
-          
-          ASSERT_THROW((void)p.read_sibling_child_string(_test_parser_testfile),
-                       Ast2DotParser::EmptyScStrException);
+
+	  // Check test file is open
+	  EXPECT_TRUE(_test_parser_testfile->is_open());
+
+	  // Assert all default values of Parser fields
+	  EXPECT_STREQ(p.inbuf().c_str(), "");
+	  EXPECT_STREQ(p.scstr().c_str(), "");
+	  EXPECT_STREQ(p.name().c_str(), "");
+	  EXPECT_STREQ(p.address().c_str(), "");
+	  EXPECT_EQ(p.props().capacity(), 5);
       }
+
+    TEST_F(TestParser, ParseScStr)
+    {
+          Ast2DotParser p;
+
+	  // Check test file is open
+	  EXPECT_TRUE(_test_parser_testfile->is_open());
+	  EXPECT_THROW(p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::EmptyScStrException());
+    }
   }
 }
 

@@ -59,7 +59,15 @@ namespace clang_ast2dot
               UnexpectedEofException() : std::runtime_error("Unexpected Eof while parsing ScStr") {};
                 virtual ~UnexpectedEofException() {};
             };
-            
+
+	    std::string& inbuf(void) { return _inbuf; }
+	    std::string& scstr(void) { return _scstr; }
+	    std::string& name(void) { return _name; }
+	    std::string& address(void) { return _address; }
+	    std::vector<std::string>& props(void) { return _props; }
+	    bool is_leaf(void) {return _is_leaf;}
+
+	    
           private:
             // Line buffer
             std::string _inbuf;

@@ -37,6 +37,12 @@ namespace clang_ast2dot
          */
         Ast2DotParser::Ast2DotParser()
         {
+	  _inbuf.clear();
+	  _scstr.clear();
+	  _name.clear();
+	  _address.clear();
+	  _props = std::vector<std::string>(5);;
+	  _is_leaf = false;
         }
         
         /** 
@@ -72,18 +78,20 @@ namespace clang_ast2dot
                                 c == ' ' ||
                                 c == '`')
                                 _scstr.append(1, c);
-                            else
-                                is->unget();
                         }
                     while(c != '|' && c != ' ' && c != '`');
+		    is->unget();
 
                     if (_scstr.empty())
                         throw Ast2DotParser::EmptyScStrException();
 
                     if ((c = is->get()) != '-')
+		      {
+			is->unget();
                         throw Ast2DotParser::InvalidScStrException();
+		      }
                     else
-                        _scstr.append(1, '-');
+		      _scstr.append(1, '-');
                 }
 
             else
