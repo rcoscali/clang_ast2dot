@@ -25,7 +25,11 @@ namespace clang_ast2dot
       
       virtual void SetUp();
       virtual void TearDown();
-
+      
+      // It's important that PrintTo() is defined in the SAME
+      // namespace that defines Bar.  C++'s look-up rules rely on that.
+      void PrintTo(const TestParser&, ::std::ostream*);
+      
       std::ifstream* _test_parser_testfile;
       
     private:

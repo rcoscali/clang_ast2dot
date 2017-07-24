@@ -20,31 +20,30 @@ namespace clang_ast2dot
       delete _test_parser_testfile;
     }
 
-    void TestParser::SetUp()
+      void TestParser::SetUp()
     {
-      _test_parser_testfile->open(_TEST_FILE_NAME, std::ios_base::in);
+        _test_parser_testfile->open(_TEST_FILE_NAME, std::ios_base::in);
     }
-
-    void TestParser::TearDown()
-    {
-      if (_test_parser_testfile->is_open())
-	_test_parser_testfile->close();
-    }
-
-    TEST_F(TestParser, Instanciate)
-    {
-      Ast2DotParser p;
-      std::string str1;
-      try
-	{
-	  str1 = p.read_sibling_child_string(_test_parser_testfile);
-	  str1 = "KO";
-	}
-      catch (std::exception e)
-	{
-	  ASSERT_STREQ(str1.c_str(), ""); 
-	}
-    }
+      
+      void TestParser::TearDown()
+      {
+          if (_test_parser_testfile->is_open())
+              _test_parser_testfile->close();
+      }
+      
+      void TestParser::PrintTo(const Ast2DotParser& parser, ::std::ostream* os) {
+          size_t pos = _test_parser_testfile->tellg();
+          *os << "Test file position: " << pos << "\n";
+      }
+      
+      TEST_F(TestParser, Instanciate)
+      {
+          Ast2DotParser p;
+          std::string str1;
+          
+          ASSERT_THROW((void)p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::EmptyScStrException);
+          
+      }
   }
 }
 

@@ -30,54 +30,61 @@
 
 namespace clang_ast2dot
 {
-  namespace parser
-  {
-    /**
-     *
-     */
-    Ast2DotParser::Ast2DotParser()
+    namespace parser
     {
-    }
+        /**
+         * Ast2DotParser Constructor
+         */
+        Ast2DotParser::Ast2DotParser()
+        {
+        }
+        
+        /** 
+         * Ast2DotParser Destructor
+         */
+        Ast2DotParser::~Ast2DotParser()
+        {
+        }
+        
+        /** 
+         * Read the string that display tree relationships in ASt dump
+         *
+         * @pre std::cin reads the AST dump. The file pointer is located 
+         *      at start of a new line.
+         *
+         * @post std::cin points on the next AST class name
+         *
+         * @return the sibling/child string representing the relationship
+         *         between AST classes
+         */
+        std::string&
+        Ast2DotParser::read_sibling_child_string(std::istream* is)
+        {
+            char c = 0;
+            _scstr.clear();
+      
+            if (!is->eof())
+                {
+                    do
+                        {
+                            if (c = is->get() == '|' ||
+                                c == ' ' ||
+                                c == '`')
+                                _scstr.append(1, c);
+                            else
+                                is->unget();
+                        }
+                    while(c != '|' && c != ' ' && c != '`');
 
-    /**
-     *
-     */
-    Ast2DotParser::~Ast2DotParser()
-    {
-    }
-
-    /**
-     * Read the string that display tree relationships in ASt dump
-     *
-     * @pre std::cin reads the AST dump. The file pointer is located 
-     *      at start of a new line.
-     *
-     * @post std::cin points on the next AST class name
-     *
-     * @return the sibling/child string representing the relationship
-     *         between AST classes
-     */
-    std::string&
-    Ast2DotParser::read_sibling_child_string(std::istream* is)
-    {
-      char c = 0;
-      _scstr.clear();
-      if (!is->eof())
-	{
-	  // Use a stringbuf over scstr member
-	  std::stringbuf sb(_scstr, std::ios_base::in);
-	  // And read from standard input until '-' (end of scstr) if encountered
-	  // '-' is also read (consummed)
-	  if ((c = is->get(sb, '-').get()) != '-')
-	    throw std::exception();
-	  // Append '-' to the result string
-	  std::cerr << "scstr = '" << _scstr << "'\n";
-	  _scstr.append(1, '-');
-	}
-      else
-	throw std::exception();
-      return _scstr;
-    }
-
-  } // ! parser
+                    if ((c = is->get()) != '-')
+                        throw Ast2DotParser::InvalidScStrException();
+                    else
+                        _scstr.append(1, '-');
+                }
+            else
+                throw std::UnexpectedScStrException();
+            return _scstr;
+        }
+        
+    } // ! parser
 } // ! clang_ast2dot
