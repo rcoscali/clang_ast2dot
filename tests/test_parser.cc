@@ -2,6 +2,8 @@
  * @test_parser.cc
  */
 
+#include <iostream>
+#include <string>
 #include "test_parser.h"
 #include "clang_ast_parser.h"
 
@@ -55,11 +57,257 @@ namespace clang_ast2dot
 
     TEST_F(TestParser, ParseScStr)
     {
-          Ast2DotParser p;
+      Ast2DotParser p;
+      std::string str1;
+      
+      // Check test file is open
+      EXPECT_TRUE(_test_parser_testfile->is_open());
+      
+      // Check 1st line is empty scstr
+      EXPECT_THROW(str1 = p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::EmptyScStrException);
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line0");
+      
+      // Check 2nd line is invalid scstr
+      EXPECT_THROW(str1 = p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::InvalidScStrException);
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      
+      // Check 3nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "| |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "-Line-2");
 
-	  // Check test file is open
-	  EXPECT_TRUE(_test_parser_testfile->is_open());
-	  EXPECT_THROW(p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::EmptyScStrException());
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line1");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "| |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line2");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "| `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line3");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line4");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   | |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line5");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   | `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line6");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |   `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line7");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line8");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   | |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line9");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   | `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line10");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |   | `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line11");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |   `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line12");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |     |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line13");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |     | `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line14");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |     `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line15");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |       `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line16");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |         |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line17");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |         | `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line18");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |         `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line19");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   |           `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line20");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|   `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line21");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|     `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line22");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "|       `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line23");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "`-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line24");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "  |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line25");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "  |-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line26");
+      
+      // Check 4nd line is invalid scstr
+      str1 = p.read_sibling_child_string(_test_parser_testfile);
+      EXPECT_STREQ(p.scstr().c_str(), "  `-");
+      
+      // Discard to next line
+      std::getline(*_test_parser_testfile, str1);
+      EXPECT_STREQ(str1.c_str(), "Line27");
+      
+      // Check next line is invalid scstr
+      EXPECT_THROW(str1 = p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::InvalidScStrException);
+
+      // Discard until end of file (2 lines)
+      std::getline(*_test_parser_testfile, str1);
+      std::getline(*_test_parser_testfile, str1);
+      // Check next line is unexpected eof scstr
+      EXPECT_THROW(str1 = p.read_sibling_child_string(_test_parser_testfile), Ast2DotParser::UnexpectedEofException);
     }
   }
 }

@@ -23,7 +23,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.arguments</key>
-					<value>-j4 -C /home/cohen/Sources/clang_ast2dot-eclipse</value>
+					<value>-j4</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.command</key>
@@ -139,9 +139,14 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>install/ast.dot</name>
-			<type>1</type>
-			<location>/home/cohen/Sources/clang_ast2dot-eclipse/ast.dot</location>
+			<name>[Targets]/[exe] test_parser/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
 			<name>[Targets]/[exe] clang_ast2dot/CMake Rules</name>
@@ -169,9 +174,74 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
+			<name>[Targets]/[exe] test_parser/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test_parser/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test_parser/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test_parser/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test_parser/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>[Targets]/[exe] clang_ast2dot/Source Files/clang_ast2dot.cc</name>
 			<type>1</type>
 			<location>/home/cohen/Sources/clang_ast2dot/src/clang_ast2dot.cc</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test_parser/Source Files/clang_ast_parser.cc</name>
+			<type>1</type>
+			<location>/home/cohen/Sources/clang_ast2dot/src/clang_ast_parser.cc</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] test_parser/Source Files/test_parser.cc</name>
+			<type>1</type>
+			<location>/home/cohen/Sources/clang_ast2dot/tests/test_parser.cc</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] gtestall/Source Files/gtest-all.cc</name>
+			<type>1</type>
+			<location>/home/cohen/Sources/clang_ast2dot/googletest/googletest/src/gtest-all.cc</location>
 		</link>
 	</linkedResources>
 </projectDescription>

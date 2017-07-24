@@ -71,31 +71,32 @@ namespace clang_ast2dot
       
             if (!is->eof())
                 {
-                    do
-                        {
-                            c = is->get();
-                            if (c == '|' ||
-                                c == ' ' ||
-                                c == '`')
-                                _scstr.append(1, c);
-                        }
-                    while(c != '|' && c != ' ' && c != '`');
-		    is->unget();
+		  do
+		    {
+		      c = is->get();
+		      if (c == '|' ||
+			  c == ' ' ||
+			  c == '`')
+			_scstr.append(1, c);
+		    }
+		  while(c == '|' || c == ' ' || c == '`');
 
-                    if (_scstr.empty())
-                        throw Ast2DotParser::EmptyScStrException();
-
-                    if ((c = is->get()) != '-')
-		      {
-			is->unget();
-                        throw Ast2DotParser::InvalidScStrException();
-		      }
-                    else
-		      _scstr.append(1, '-');
+		  is->unget();
+		  
+		  if (_scstr.empty())
+		    throw Ast2DotParser::EmptyScStrException();
+		 		  
+		  if ((c = is->get()) != '-')
+		    {
+		      is->unget();
+		      throw Ast2DotParser::InvalidScStrException();
+		    }
+		  else
+		    _scstr.append(1, '-');
                 }
-
+	    
             else
-                throw Ast2DotParser::UnexpectedEofException();
+	      throw Ast2DotParser::UnexpectedEofException();
             
             return _scstr;
         }

@@ -2,5 +2,7 @@
 mkdir -p build
 cd build
 rm -f CMakeCache.txt
-cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Debug ..
+#cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Debug ..
+#cmake -G "Eclipse CDT4 - Ninja" -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Debug ..
+cmake -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Debug ..
 cd -
