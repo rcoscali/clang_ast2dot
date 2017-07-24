@@ -152,7 +152,7 @@ namespace clang_ast2dot
 	if (inbuf = read_ast_line())
 	  {
 
-	    /*
+              /*
            * We quote AST special quotes (<<<...>>>, <<...>> and <...>) for
            * having the quoted string in one token
            */
