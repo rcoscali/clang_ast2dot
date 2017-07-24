@@ -100,6 +100,91 @@ namespace clang_ast2dot
             
             return _scstr;
         }
+
+        /**
+         * This method quotes some specific quoting string in order for 
+         * the quoted string to be handled as one token.
+         * ex.: the string 
+         *    <<a special quoted string>>
+         * will be replaced with
+         *    "<<a special quoted string>>"
+         * This way, only one token:
+         *  '<<a special quoted string>>'
+         * will be parsed instead of four tokens:
+         *  1. '<<a'
+         *  2. 'special'
+         *  3. 'quoted'
+         *  4. 'string>>'
+         */
+        std::string&
+        Ast2DotParser::quote_special_quotes(std::string& input_buf,
+                                            std::string const& in_quoting_str,
+                                            std::string const& out_quoting_str,
+                                            std::string*& out_buf_ptr)
+        {
+            // Copy of input buffer
+            std::string *inbuf = new std::string(input_buf);
+            // Set out_buf_ptr to null
+            out_buf_ptr = (std::string*)NULL;
+            // Length of in quote string
+            int in_len = in_quoting_str.length();
+            // Length of out quote string
+            int out_len = out_quoting_str.length();
+            // curpos (pos of in quote)
+            size_t curpos = std::string::npos;
+            // lastpos (pos of out quote)
+            size_t lastpos = std::string::npos;
+            
+            // Search the special quoting string to handle, 'in' must be before 'out'
+            if ((curpos = input_buf.find(in_quoting_str)) != std::string::npos &&
+                (lastpos = input_buf.find(out_quoting_str)) != std::string::npos &&
+                curpos < lastpos)
+                {
+                    // Insert a dbl quote at start of in_quote
+                    std::string quote_entry = std::string("\"").append(in_quoting_str);
+                    // and replace in_quote in result buf
+                    inbuf->replace(curpos, in_len, quote_entry);
+                    // Also insert a dbl quote at end for tokenizing the whole string
+                    std::string quote_exit = std::string(out_quoting_str).append("\"");
+                    // and replace out_quote in result buf 
+                    inbuf->replace(inbuf->find(out_quoting_str, curpos + in_len +1), out_len, quote_exit);
+                    // Set return ptr
+                    out_buf_ptr = inbuf;
+                }
+
+            // Return result buf
+            return (*inbuf);
+        }
+
+        /**
+         *
+         */
+        std::string&
+        Ast2DotParser::read_vertex_props(std::istream* is)
+        {
+            std::string ast;
+            std::string* astptr;
+
+            std::getline(*is, ast);
+
+            /*
+             * We quote AST special quotes (<<<...>>>, <<...>> and <...>) for
+             * having the quoted string in one token
+             */
+            ast = quote_special_quotes(ast, "<<<", ">>>", astptr);
+            ast = quote_special_quotes(ast, "<<", ">>", astptr);
+            ast = quote_special_quotes(ast, "<", ">", astptr);
+                        
+            /*
+             * let's start the real tokenizing work
+             */
+            // Init separator
+            boost::escaped_list_separator<char> f("\\", " ", "\\\"");
+            // And tokenizer
+            boost::tokenizer < boost::escaped_list_separator<char> > tok(ast, f);
+            // Start iteration
+            boost::tokenizer<boost::escaped_list_separator<char> >::iterator it = tok.begin();
+        }
         
     } // ! parser
 } // ! clang_ast2dot
