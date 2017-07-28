@@ -1,0 +1,78 @@
+TranslationUnitDecl 0x1979690 <<invalid sloc>>
+TypedefDecl 0x1979b70 <<invalid sloc>> __int128_t '__int128'
+TypedefDecl 0x1979bd0 <<invalid sloc>> __uint128_t 'unsigned __int128'
+TypedefDecl 0x1979f20 <<invalid sloc>> __builtin_va_list '__va_list_tag [1]'
+FunctionDecl 0x197a040 <ex.c:1:1, line:10:1> foo 'int (int)'
+ParmVarDecl 0x1979f80 <line:1:9, col:13> a 'int'
+CompoundStmt 0x19a6928 <line:2:1, line:10:1>
+DeclStmt 0x197a200 <line:3:2, col:14>
+VarDecl 0x197a100 <col:2, col:6> b 'int'
+VarDecl 0x197a170 <col:2, col:13> c 'int'
+IntegerLiteral 0x197a1c8 <col:13> 'int' 1
+BinaryOperator 0x197a2e8 <line:5:2, col:10> 'int' '='
+DeclRefExpr 0x197a218 <col:2> 'int' lvalue Var 0x197a100 'b' 'int'
+BinaryOperator 0x197a2c0 <col:6, col:10> 'int' '*'
+ImplicitCastExpr 0x197a290 <col:6> 'int' <LValueToRValue>
+DeclRefExpr 0x197a240 <col:6> 'int' lvalue Var 0x197a170 'c' 'int'
+ImplicitCastExpr 0x197a2a8 <col:10> 'int' <LValueToRValue>
+DeclRefExpr 0x197a268 <col:10> 'int' lvalue ParmVar 0x1979f80 'a' 'int'
+ForStmt 0x19a6888 <line:6:2, line:7:17>
+DeclStmt 0x197a398 <line:6:7, col:16>
+VarDecl 0x197a320 <col:7, col:15> n 'int'
+IntegerLiteral 0x197a378 <col:15> 'int' 0
+<<<NULL>>>
+BinaryOperator 0x19a6698 <col:18, col:26> 'int' '<'
+ImplicitCastExpr 0x19a6680 <col:18> 'int' <LValueToRValue>
+DeclRefExpr 0x19a65d0 <col:18> 'int' lvalue Var 0x197a320 'n' 'int'
+BinaryOperator 0x19a6658 <col:22, col:26> 'int' '+'
+ImplicitCastExpr 0x19a6640 <col:22> 'int' <LValueToRValue>
+DeclRefExpr 0x19a65f8 <col:22> 'int' lvalue Var 0x197a170 'c' 'int'
+IntegerLiteral 0x19a6620 <col:26> 'int' 5
+UnaryOperator 0x19a66e8 <col:29, col:30> 'int' postfix '++'
+DeclRefExpr 0x19a66c0 <col:29> 'int' lvalue Var 0x197a320 'n' 'int'
+BinaryOperator 0x19a6860 <line:7:3, col:17> 'int' '='
+DeclRefExpr 0x19a6708 <col:3> 'int' lvalue Var 0x197a100 'b' 'int'
+BinaryOperator 0x19a6838 <col:7, col:17> 'int' '+'
+ImplicitCastExpr 0x19a6820 <col:7> 'int' <LValueToRValue>
+DeclRefExpr 0x19a6730 <col:7> 'int' lvalue Var 0x197a100 'b' 'int'
+ParenExpr 0x19a6800 <col:11, col:17> 'int'
+BinaryOperator 0x19a67d8 <col:12, col:16> 'int' '*'
+ImplicitCastExpr 0x19a67a8 <col:12> 'int' <LValueToRValue>
+DeclRefExpr 0x19a6758 <col:12> 'int' lvalue Var 0x197a320 'n' 'int'
+ImplicitCastExpr 0x19a67c0 <col:16> 'int' <LValueToRValue>
+DeclRefExpr 0x19a6780 <col:16> 'int' lvalue ParmVar 0x1979f80 'a' 'int'
+ReturnStmt 0x19a6908 <line:9:2, col:9>
+ImplicitCastExpr 0x19a68f0 <col:9> 'int' <LValueToRValue>
+DeclRefExpr 0x19a68c8 <col:9> 'int' lvalue Var 0x197a100 'b' 'int'
+FunctionDecl 0x19a6b50 <line:12:1, line:20:1> main 'int (int, char **)'
+ParmVarDecl 0x19a6970 <line:13:6, col:10> argc 'int'
+ParmVarDecl 0x19a6a80 <col:16, col:27> argv 'char **'
+CompoundStmt 0x19a70b0 <line:14:1, line:20:1>
+DeclStmt 0x19a6d20 <line:15:2, col:17>
+VarDecl 0x19a6c10 <col:2, col:16> v1 'int'
+CallExpr 0x19a6cf0 <col:11, col:16> 'int'
+ImplicitCastExpr 0x19a6cd8 <col:11> 'int (*)(int)' <FunctionToPointerDecay>
+DeclRefExpr 0x19a6c68 <col:11> 'int (int)' Function 0x197a040 'foo' 'int (int)'
+IntegerLiteral 0x19a6c90 <col:15> 'int' 1
+DeclStmt 0x19a6e38 <line:16:2, col:17>
+VarDecl 0x19a6d50 <col:2, col:16> v2 'int'
+CallExpr 0x19a6e08 <col:11, col:16> 'int'
+ImplicitCastExpr 0x19a6df0 <col:11> 'int (*)(int)' <FunctionToPointerDecay>
+DeclRefExpr 0x19a6da8 <col:11> 'int (int)' Function 0x197a040 'foo' 'int (int)'
+IntegerLiteral 0x19a6dd0 <col:15> 'int' 2
+DeclStmt 0x19a6f48 <line:17:2, col:17>
+VarDecl 0x19a6e60 <col:2, col:16> v3 'int'
+CallExpr 0x19a6f18 <col:11, col:16> 'int'
+ImplicitCastExpr 0x19a6f00 <col:11> 'int (*)(int)' <FunctionToPointerDecay>
+DeclRefExpr 0x19a6eb8 <col:11> 'int (int)' Function 0x197a040 'foo' 'int (int)'
+IntegerLiteral 0x19a6ee0 <col:15> 'int' 4
+ReturnStmt 0x19a7090 <line:19:2, col:22>
+ParenExpr 0x19a7070 <col:9, col:22> 'int'
+BinaryOperator 0x19a7048 <col:10, col:20> 'int' '+'
+BinaryOperator 0x19a6fe0 <col:10, col:15> 'int' '+'
+ImplicitCastExpr 0x19a6fb0 <col:10> 'int' <LValueToRValue>
+DeclRefExpr 0x19a6f60 <col:10> 'int' lvalue Var 0x19a6c10 'v1' 'int'
+ImplicitCastExpr 0x19a6fc8 <col:15> 'int' <LValueToRValue>
+DeclRefExpr 0x19a6f88 <col:15> 'int' lvalue Var 0x19a6d50 'v2' 'int'
+ImplicitCastExpr 0x19a7030 <col:20> 'int' <LValueToRValue>
+DeclRefExpr 0x19a7008 <col:20> 'int' lvalue Var 0x19a6e60 'v3' 'int'

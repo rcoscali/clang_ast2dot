@@ -45,7 +45,7 @@ namespace clang_ast2dot
 
     po::variables_map& vm(void);
     int do_main(int);
-    bool create_dot();
+    bool create_dot(std::istream *, std::ostream *, std::string const&, int);
     
   private:
     int _argc;

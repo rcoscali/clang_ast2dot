@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 /**
  * Boost tokenizer for parsing ast dump lines
@@ -157,10 +158,55 @@ namespace clang_ast2dot
         }
 
         /**
+         * Escape utf chars and some special chars for URL/HTML
+         * (or equivalent) output
+         */
+        std::string& escape_dot_string(std::string& str)
+	{
+	  // Found character position
+	  size_t pos = 0;
+	  // Length of escaped sequence
+	  size_t ilen = 0;
+	  
+	  do
+	    {
+	      std::cerr << "[escaped_dot_string] str = '" << str << "'\n";
+	      pos = str.find_first_of("<>\\ ", pos + ilen);
+	      if (pos != std::string::npos)
+		switch (str[pos]) {
+		default:
+		  break;
+		case '<':
+		  str.replace(pos, 1, "&lt;");
+		  ilen = 4;
+		  break;
+		case '>':
+		  str.replace(pos, 1, "&gt;");
+		  ilen = 4;
+		  break;
+		case ' ':
+		  str.replace(pos, 1, "&nbsp;");
+		  ilen = 6;
+		  break;
+		case '\\':
+		  str = str.insert(pos, 1, '\\');
+		  ilen = 1;
+		  break;
+		}
+	      
+	      std::cerr << "[escaped_dot_string] pos = " << pos << "\n";
+	    }
+	  while (pos != std::string::npos);
+	  
+	  return str;
+	}
+
+        
+        /**
          *
          */
         std::string&
-        Ast2DotParser::read_vertex_props(std::istream* is)
+        Ast2DotParser::read_vertex_props(std::istream* is, std::ostream* os)
         {
             std::string ast;
             std::string* astptr;
@@ -181,9 +227,49 @@ namespace clang_ast2dot
             // Init separator
             boost::escaped_list_separator<char> f("\\", " ", "\\\"");
             // And tokenizer
-            boost::tokenizer < boost::escaped_list_separator<char> > tok(ast, f);
+            boost::tokenizer<boost::escaped_list_separator<char> > tok(ast, f);
             // Start iteration
             boost::tokenizer<boost::escaped_list_separator<char> >::iterator it = tok.begin();
+
+            do
+	      {
+		// Name & address are always available but for <<<null>>>, where we have only this token
+		_name = (*it);
+		it++;
+		if (it == tok.end())
+		  break;
+		
+		// Address
+		_address = (*it);
+		it++;
+		if (it == tok.end())
+		  break;
+		
+		for (; it != tok.end(); ++it)
+		  _props.push_back((*it));
+	      }
+            while (0);
+	    
+            std::stringbuf strbuf;
+            std::ostream ostr(&strbuf);
+
+            ostr << "    " << _name;
+            if (!_address.empty())
+                ostr << "_" << _address;
+            
+            ostr << " [shape=record,style=filled,fillcolor=lightgrey,label=\"{ ";
+            ostr << _name << " ";
+
+            for (std::vector<std::string>::iterator svit = _props.begin();
+                 svit != _props.end();
+                 ++svit)
+	      ostr << escape_dot_string(*svit) << "| ";
+
+	    ostr << "}\"];\n";
+	    
+	    std::string *ret = new std::string(strbuf.str());
+	    
+            return *ret;
         }
         
     } // ! parser

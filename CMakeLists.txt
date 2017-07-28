@@ -8,7 +8,7 @@ find_package(Boost)
 project(Clang_Ast2Dot)
 
 # Create executable target clang_ast2dot
-add_executable(clang_ast2dot src/clang_ast2dot.cc)
+add_executable(clang_ast2dot src/clang_ast2dot.cc src/clang_ast_parser.cc)
 target_compile_options(clang_ast2dot PUBLIC "-std=c++11")
 target_link_libraries(clang_ast2dot "boost_regex;boost_program_options;boost_system")
 

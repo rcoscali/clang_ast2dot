@@ -31,9 +31,11 @@ namespace clang_ast2dot
       void PrintTo(const TestParser&, ::std::ostream*);
       
       std::ifstream* _test_parser_testfile;
+      std::ifstream* _test_parser2_testfile;
       
     private:
       std::string _TEST_FILE_NAME;
+      std::string _TEST_FILE_NAME2;
     };
   }
 }

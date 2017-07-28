@@ -47,7 +47,7 @@ namespace clang_ast2dot
              * Read the string that represent the relationship (edge) between
              * vertex of one line and the vertex of the next line
              */
-            std::string& read_sibling_child_string(std::istream* = &std::cin);
+            std::string& read_sibling_child_string(std::istream *is = &std::cin);
 
             /**
              * Replace special quoting string with quoted one
@@ -58,9 +58,14 @@ namespace clang_ast2dot
                                               std::string*&);
 
             /**
+             * Escape vertex properties strings special characters
+             * (ex. < with &lt;). Almost the same as json/html
+             */
+
+            /**
              * Read properties of a vertex (until end of line)
              */
-            std::string& read_vertex_props(std::istream* = &std::cin);
+            std::string& read_vertex_props(std::istream *, std::ostream *);
 
             /**
              * Empty relationship string exception
