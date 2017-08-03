@@ -27,8 +27,10 @@ DeclRefExpr 0x19a65d0 <col:18> 'int' lvalue Var 0x197a320 'n' 'int'
 BinaryOperator 0x19a6658 <col:22, col:26> 'int' '+'
 ImplicitCastExpr 0x19a6640 <col:22> 'int' <LValueToRValue>
 DeclRefExpr 0x19a65f8 <col:22> 'int' lvalue Var 0x197a170 'c' 'int'
+<<<NULL>>>
 IntegerLiteral 0x19a6620 <col:26> 'int' 5
 UnaryOperator 0x19a66e8 <col:29, col:30> 'int' postfix '++'
+<<<NULL>>>
 DeclRefExpr 0x19a66c0 <col:29> 'int' lvalue Var 0x197a320 'n' 'int'
 BinaryOperator 0x19a6860 <line:7:3, col:17> 'int' '='
 DeclRefExpr 0x19a6708 <col:3> 'int' lvalue Var 0x197a100 'b' 'int'
