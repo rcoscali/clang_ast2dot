@@ -106,11 +106,15 @@ namespace clang_ast2dot
     // While not end of file
     while (!is->eof())
       {
+	std::string name;
+	
 	// Parse vertex and return the vertex string for the .dot file
 	// Fields in Parser instance are initialized with each part
 	std::string *vertex = parser.read_vertex_props(is, os);
+
 	// Get the name (= Vertex name + vertex address)
-	std::string name = parser.name().append(std::string("_").append(parser.address()));
+	if (!vertex->empty())
+	  name = parser.name().append(std::string("_").append(parser.address()));
 
 	// Out the vertex string
 	*os << *vertex;
