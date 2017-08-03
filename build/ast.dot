@@ -1,7 +1,0 @@
-digraph {
-    TranslationUnitDecl_0x1979690 [shape=record,style=filled,fillcolor=lightgrey,label="{ TranslationUnitDecl_0x1979690 |&lt;&lt;invalid&nbsp;sloc&gt;&gt; }"];
-    TypedefDecl_0x1979b70 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl_0x1979b70 |&lt;&lt;invalid&nbsp;sloc&gt;&gt; |__int128_t |'__int128' }"];
-    TranslationUnitDecl_0x1979690 -> TypedefDecl_0x1979b70 [style="solid",color=black,weight=100,constraint=true];
-    TypedefDecl_0x1979bd0 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl_0x1979bd0 |&lt;&lt;invalid&nbsp;sloc&gt;&gt; |__uint128_t |'unsigned |__int128' }"];
-     -> TypedefDecl_0x1979bd0 [style="solid",color=black,weight=100,constraint=true];
-}

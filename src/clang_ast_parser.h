@@ -57,15 +57,26 @@ namespace clang_ast2dot
                                               std::string const&,
                                               std::string*&);
 
-            /**
+            /*
              * Escape vertex properties strings special characters
              * (ex. < with &lt;). Almost the same as json/html
              */
 
+	    /*
+	     * Provide a name for a null vertex.
+	     * If ix is -1, add a new null else return indexed one
+	     */
+	    std::string null_to_name(int const& ix = -1);
+
+	    /*
+	     * Provide a label for a null vertex.
+	     */
+	    std::string null_to_label(std::string const&);
+
             /**
              * Read properties of a vertex (until end of line)
              */
-            std::string& read_vertex_props(std::istream *, std::ostream *);
+            std::string* read_vertex_props(std::istream *, std::ostream *);
 
             /**
              * Empty relationship string exception
@@ -103,6 +114,8 @@ namespace clang_ast2dot
 	    std::string& scstr(void) { return _scstr; }
             /** Name of the vertex */
 	    std::string& name(void) { return _name; }
+            /** Label of the vertex */
+	    std::string& label(void) { return _label; }
             /** Address of the vertex (will be part of the vertex ID) */
 	    std::string& address(void) { return _address; }
             /** Vector of string used for loading vertex properties */
@@ -117,10 +130,14 @@ namespace clang_ast2dot
             std::string _scstr;
             // Vertex name
             std::string _name;
+            // Vertex label
+            std::string _label;
             // Vertex address
             std::string _address;
             // Other props (class dependent)
             std::vector<std::string> _props;
+	    // Null vertex are numbered
+	    std::map<int, std::string> _name2null;
             
             // Vertex is leaf?
             bool _is_leaf;

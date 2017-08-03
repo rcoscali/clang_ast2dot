@@ -1,0 +1,17 @@
+digraph {
+    A_1 [shape=record,style=filled,fillcolor=lightgrey,label="{ A| }"];
+    B_2 [shape=record,style=filled,fillcolor=lightgrey,label="{ B| }"];
+    A_1 -> B_2 [style="solid",color=black,weight=100,constraint=true];
+    C_3 [shape=record,style=filled,fillcolor=lightgrey,label="{ C| }"];
+    B_2 -> C_3 [style="solid",color=black,weight=100,constraint=true];
+    D_4 [shape=record,style=filled,fillcolor=lightgrey,label="{ D| }"];
+    B_2 -> D_4 [style="solid",color=black,weight=100,constraint=true];
+    E_5 [shape=record,style=filled,fillcolor=lightgrey,label="{ E| }"];
+    A_1 -> E_5 [style="solid",color=black,weight=100,constraint=true];
+    F_6 [shape=record,style=filled,fillcolor=lightgrey,label="{ F| }"];
+    E_5 -> F_6 [style="solid",color=black,weight=100,constraint=true];
+    G_7 [shape=record,style=filled,fillcolor=lightgrey,label="{ G| }"];
+    E_5 -> G_7 [style="solid",color=black,weight=100,constraint=true];
+    H_8 [shape=record,style=filled,fillcolor=lightgrey,label="{ H| }"];
+    A_1 -> H_8 [style="solid",color=black,weight=100,constraint=true];
+}
