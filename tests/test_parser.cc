@@ -14,22 +14,31 @@ namespace clang_ast2dot
   {
     TestParser::TestParser()
     {
+      // Open first test file
       _TEST_FILE_NAME.assign("../tests/test_parser.txt");
-      _TEST_FILE_NAME2.assign("../tests/test_parser2.txt");
       _test_parser_testfile = new std::ifstream();
+
+      // And second test file
+      _TEST_FILE_NAME2.assign("../tests/test_parser2.txt");
       _test_parser2_testfile = new std::ifstream();
+
+      // And the valid values file
+      _TEST_FILE_NAME3.assign("../tests/test_parser2.res");
+      _test_parser3_testfile = new std::ifstream();
     }
     
     TestParser::~TestParser()
     {
       delete _test_parser_testfile;
       delete _test_parser2_testfile;
+      delete _test_parser3_testfile;
     }
 
     void TestParser::SetUp()
     {
       _test_parser_testfile->open(_TEST_FILE_NAME, std::ios_base::in);
-      _test_parser_testfile->open(_TEST_FILE_NAME2, std::ios_base::in);
+      _test_parser2_testfile->open(_TEST_FILE_NAME2, std::ios_base::in);
+      _test_parser3_testfile->open(_TEST_FILE_NAME3, std::ios_base::in);
     }
       
     void TestParser::TearDown()
@@ -38,6 +47,8 @@ namespace clang_ast2dot
         _test_parser_testfile->close();
       if (_test_parser2_testfile->is_open())
         _test_parser2_testfile->close();
+      if (_test_parser3_testfile->is_open())
+        _test_parser3_testfile->close();
     }
       
     void TestParser::PrintTo(const TestParser& parser, ::std::ostream* os)
@@ -46,6 +57,8 @@ namespace clang_ast2dot
       *os << "Test file position: " << pos << "\n";
       size_t pos2 = _test_parser2_testfile->tellg();
       *os << "Test file #2 position: " << pos2 << "\n";
+      size_t pos3 = _test_parser3_testfile->tellg();
+      *os << "Test file #3 position: " << pos3 << "\n";
     }
       
     TEST_F(TestParser, Instanciate)
@@ -333,7 +346,8 @@ namespace clang_ast2dot
       std::string* outptr;
 
       in = "a simple <test for simple quote with less/greater than> special chars";
-      out = p.quote_special_quotes(in, "<", ">", outptr);
+      out = in;
+      out = p.quote_special_quotes(out, "<", ">", outptr);
       EXPECT_STREQ(out.c_str(), "a simple \"<test for simple quote with less/greater than>\" special chars");
       EXPECT_FALSE(outptr == (std::string*)NULL);
       if (outptr) delete (outptr);
@@ -344,7 +358,8 @@ namespace clang_ast2dot
       if (outptr) delete (outptr);
 
       in = "another <<one with special>> quotes";
-      out = p.quote_special_quotes(in, "<<", ">>", outptr);
+      out = in;
+      out = p.quote_special_quotes(out, "<<", ">>", outptr);
       EXPECT_STREQ(out.c_str(), "another \"<<one with special>>\" quotes");
       EXPECT_FALSE(outptr == (std::string*)NULL);
       if (outptr) delete (outptr);
@@ -354,9 +369,11 @@ namespace clang_ast2dot
       EXPECT_TRUE(outptr == (std::string*)NULL);
       if (outptr) delete (outptr);
             
-      in = "and finally <<<the very last>>> quotes";
-      out = p.quote_special_quotes(in, "<<<", ">>>", outptr);
-      EXPECT_STREQ(out.c_str(), "and finally \"<<<the very last>>>\" quotes");
+      in = "and <<finally another>> one <<<the very last>>> quotes";
+      out = in;
+      out = p.quote_special_quotes(out, "<<", ">>", outptr);
+      out = p.quote_special_quotes(out, "<<<", ">>>", outptr);
+      EXPECT_STREQ(out.c_str(), "and \"<<finally another>>\" one \"<<<the very last>>>\" quotes");
       EXPECT_FALSE(outptr == (std::string*)NULL);
       if (outptr) delete (outptr);
             
@@ -364,6 +381,23 @@ namespace clang_ast2dot
       EXPECT_STREQ(out.c_str(), in.c_str());
       EXPECT_TRUE(outptr == (std::string*)NULL);
       if (outptr) delete (outptr);            
+    }
+
+    TEST_F(TestParser, Null2Name)
+    {
+      Ast2DotParser p;
+
+      EXPECT_STREQ(p.null_to_name(0).c_str(), "NULL_0");
+      EXPECT_STREQ(p.null_to_label("NULL_0").c_str(), "&lt;&lt;&lt;NULL_0&gt;&gt;&gt;");
+      EXPECT_STREQ(p.null_to_name(-1).c_str(), "NULL_1");
+      EXPECT_STREQ(p.null_to_name(2).c_str(), "NULL_2");
+      EXPECT_STREQ(p.null_to_name(0).c_str(), "NULL_0");
+      EXPECT_STREQ(p.null_to_name(-1).c_str(), "NULL_3");
+      EXPECT_STREQ(p.null_to_name(2).c_str(), "NULL_2");
+      EXPECT_STREQ(p.null_to_label("NULL_1").c_str(), "&lt;&lt;&lt;NULL_1&gt;&gt;&gt;");
+      EXPECT_STREQ(p.null_to_label("NULL_2").c_str(), "&lt;&lt;&lt;NULL_2&gt;&gt;&gt;");
+      EXPECT_STREQ(p.null_to_label("NULL_3").c_str(), "&lt;&lt;&lt;NULL_3&gt;&gt;&gt;");
+      EXPECT_STREQ(p.null_to_label("NULL_4").c_str(), "");
     }
 
     TEST_F(TestParser, ParseVertexProps)
@@ -376,9 +410,23 @@ namespace clang_ast2dot
       // Set pointer at start of the file
       _test_parser2_testfile->seekg(0, std::ios_base::beg);      
 
+      // Check result file is open
+      EXPECT_TRUE(_test_parser3_testfile->is_open());
+
+      // Set pointer at start of the file
+      _test_parser3_testfile->seekg(0, std::ios_base::beg);      
+
       while (!_test_parser2_testfile->eof())
 	{
-	  std::string vertex_str = p.read_vertex_props(_test_parser2_testfile, &std::cout);
+	  std::string *vertex_str = p.read_vertex_props(_test_parser2_testfile, &std::cerr);
+	  if (!vertex_str->empty())
+	    {
+	      std::string result;
+	      std::getline(*_test_parser3_testfile, result);
+	      result.append("\n");
+	      EXPECT_TRUE(vertex_str->compare(result) == 0);
+	    }
+	  delete vertex_str;
 	}
     }
   }

@@ -93,31 +93,29 @@ namespace clang_ast2dot
   /*
    * Recursively create the .dot file 
    */
-  bool
+  void
   Ast2DotMain::create_dot(std::istream* is, std::ostream* os, std::string const& parent_vertex, int level)
   {
     // AST dump parser
     ast2dot::Ast2DotParser parser;
-    
-    // Boolean tracking the fact that current vertex has no child, then
-    // we need to exit to create a sibling
-    bool goes_on = true;
     
     /* 
      * Cout eventually sends to output file and cin gets from input file
      */
     
     // While not end of file
-    while (!is->eof() && goes_on)
+    while (!is->eof())
       {
 	// Parse vertex and return the vertex string for the .dot file
 	// Fields in Parser instance are initialized with each part
-	std::string vertex = parser.read_vertex_props(is, os);
+	std::string *vertex = parser.read_vertex_props(is, os);
 	// Get the name (= Vertex name + vertex address)
-	std::string name = parser.name().append(std::string("-").append(parser.address()));
+	std::string name = parser.name().append(std::string("_").append(parser.address()));
 
 	// Out the vertex string
-	*os << vertex;
+	*os << *vertex;
+
+	delete vertex;
 
 	// And if some relationship is needed add the directed edge
 	if (!(parent_vertex.empty() || name.empty()))
@@ -133,43 +131,39 @@ namespace clang_ast2dot
 	    // ("|-" for a vertex having still sibling or "`-" for a vertex being
 	    // the last child)
 	    scstr = parser.read_sibling_child_string(is);
-	    int new_level = scstr.length() / 2;
-
-	    // We goes down deeper in tree
-	    if (new_level > level)
-	      goes_on = create_dot(is, os, name, new_level);
-
-	    // Create some siblin vertex
-	    else if (new_level == level)
+	    if (!scstr.empty())
 	      {
-		// Match with RE
-		boost::regex_match(scstr, _what, _re);
-		// Goes on for some other sibling vertex if it ends with "|-"
-		goes_on = (_what[5].compare("|-") == 0);
+		int new_level = scstr.length() / 2;
+
+		// We goes down deeper in tree
+		if (new_level > level)
+		  create_dot(is, os, name, new_level);
+
+		else if (new_level < level)
+
+		  // Get back up in tree
+		  return;
 	      }
-	    
-	    else
-	      // Get back up in tree
-	      goes_on = false;
 	  }
 	catch (ast2dot::Ast2DotParser::UnexpectedEofException ueofe)
 	  {
 	    std::cerr << "Error: " << ueofe.what() << "\n";
 	    std::cerr << "Exception while reading edge spec string\n";
+	    break;
 	  }
 	catch (ast2dot::Ast2DotParser::EmptyScStrException esse)
 	  {
 	    std::cerr << "Error: " << esse.what() << "\n";
 	    std::cerr << "Exception while reading edge spec string\n";
+	    break;
 	  }
 	catch (ast2dot::Ast2DotParser::InvalidScStrException isse)
 	  {
 	    std::cerr << "Error: " << isse.what() << "\n";
 	    std::cerr << "Exception while reading edge spec string\n";
+	    break;
 	  }
       }
-
-    return goes_on;
   }
   
   /*
@@ -237,7 +231,7 @@ namespace clang_ast2dot
 	std::cout << "digraph {\n";
 
         // First call for root with all empty/level 0
-        (void) create_dot(&std::cin, &std::cout, "", 0);
+        create_dot(&std::cin, &std::cout, "", 0);
 
         // Create vertex in dot file
         std::cout << "}\n";
