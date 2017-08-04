@@ -1,0 +1,5 @@
+A x1979690 <<invalid sloc>>
+|-B x197a200 <line:3:2, col:14>
+| |-C x197a100 <col:2, col:6> b 'int'
+| `-D 0x197a170 <col:2, col:13> c 'int'
+`-F 0x197a2e8 <line:5:2, col:10> 'int' '='

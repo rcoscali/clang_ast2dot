@@ -112,6 +112,8 @@ namespace clang_ast2dot
 	    std::string& inbuf(void) { return _inbuf; }
             /** Current edge string: relationship between one vertex and the previopus parent one */
 	    std::string& scstr(void) { return _scstr; }
+            /** Is vertex is null */
+	    bool is_null(void) { return _is_null; }
             /** Name of the vertex */
 	    std::string& name(void) { return _name; }
             /** Label of the vertex */
@@ -128,6 +130,8 @@ namespace clang_ast2dot
             std::string _inbuf;
             // Edges
             std::string _scstr;
+	    // Is null
+	    bool _is_null;
             // Vertex name
             std::string _name;
             // Vertex label

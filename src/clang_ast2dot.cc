@@ -42,7 +42,7 @@
 // Local directory config file
 #define AST2DOT_LOCAL_CONFIG_FILE_PATH          "./.clang_ast2dotrc"
 // Regex for matching ast dump relationship string
-#define AST_DUMP_RELATIONSHIP_REGEX		"^((\\| )|( \\|)|(  ))*(\\|-|`-)$"
+#define AST_DUMP_RELATIONSHIP_REGEX             "^((\\| )|( \\|)|(  ))*(\\|-|`-)$"
 
 // Verbose level
 static int opt_verbose = 0;
@@ -93,7 +93,7 @@ namespace clang_ast2dot
   /*
    * Recursively create the .dot file 
    */
-  void
+  int
   Ast2DotMain::create_dot(std::istream* is, std::ostream* os, std::string const& parent_vertex, int level)
   {
     // AST dump parser
@@ -106,67 +106,75 @@ namespace clang_ast2dot
     // While not end of file
     while (!is->eof())
       {
-	std::string name;
-	
-	// Parse vertex and return the vertex string for the .dot file
-	// Fields in Parser instance are initialized with each part
-	std::string *vertex = parser.read_vertex_props(is, os);
+        std::string name;
+        
+        // Parse vertex and return the vertex string for the .dot file
+        // Fields in Parser instance are initialized with each part
+        std::string *vertex = parser.read_vertex_props(is, os);
 
-	// Get the name (= Vertex name + vertex address)
-	if (!vertex->empty())
-	  name = parser.name().append(std::string("_").append(parser.address()));
+        // Get the name (= Vertex name + vertex address)
+        if (!vertex->empty())
+          {
+            name = parser.name();
+            if (!parser.is_null())
+              name.append(std::string("_").append(parser.address()));
+          }
 
-	// Out the vertex string
-	*os << *vertex;
+        // Out the vertex string
+        *os << *vertex;
 
-	delete vertex;
+        delete vertex;
 
-	// And if some relationship is needed add the directed edge
-	if (!(parent_vertex.empty() || name.empty()))
-	  *os << "    " << parent_vertex << " -> " << name << " [style=\"solid\",color=black,weight=100,constraint=true];\n";
+        // And if some relationship is needed add the directed edge
+        if (!(parent_vertex.empty() || name.empty()))
+          *os << "    " << parent_vertex << " -> " << name << " [style=\"solid\",color=black,weight=100,constraint=true];\n";
 
-	// Start next vertex relationship string
-	std::string scstr;
-	
-	// Read relationship spec string
-	try
-	  {
-	    // Returns the full string from beginning of line until the dash '-'
-	    // ("|-" for a vertex having still sibling or "`-" for a vertex being
-	    // the last child)
-	    scstr = parser.read_sibling_child_string(is);
-	    if (!scstr.empty())
-	      {
-		int new_level = scstr.length() / 2;
+        os->flush();
 
-		// We goes down deeper in tree
-		if (new_level > level)
-		  create_dot(is, os, name, new_level);
+        // Start next vertex relationship string
+        std::string scstr;
+        
+        // Read relationship spec string
+        try
+          {
+            // Returns the full string from beginning of line until the dash '-'
+            // ("|-" for a vertex having still sibling or "`-" for a vertex being
+            // the last child)
+            scstr = parser.read_sibling_child_string(is);
+            if (!scstr.empty())
+              {
+                int new_level = scstr.length() / 2;
 
-		else if (new_level < level)
+                // We goes down deeper in tree
+                if (new_level > level)
+                  new_level = create_dot(is, os, name, new_level);
 
-		  // Get back up in tree
-		  return;
-	      }
-	  }
-	catch (ast2dot::Ast2DotParser::UnexpectedEofException ueofe)
-	  {
-	    std::cerr << "Error: " << ueofe.what() << "\n";
-	    std::cerr << "Exception while reading edge spec string\n";
-	    break;
-	  }
-	catch (ast2dot::Ast2DotParser::EmptyScStrException esse)
-	  {
-	    std::cerr << "Error: " << esse.what() << "\n";
-	    std::cerr << "Exception while reading edge spec string\n";
-	    break;
-	  }
-	catch (ast2dot::Ast2DotParser::InvalidScStrException isse)
-	  {
-	    std::cerr << "Error: " << isse.what() << "\n";
-	    std::cerr << "Exception while reading edge spec string\n";
-	    break;
-	  }
+                if (new_level == level)
+                  new_level = create_dot(is, os, parent_vertex, level);
+
+                if (new_level < level)
+                  // Get back up in tree
+                  return new_level;
+              }
+          }
+        catch (ast2dot::Ast2DotParser::UnexpectedEofException const& ueofe)
+          {
+            std::cerr << "Error: " << ueofe.what() << "\n";
+            std::cerr << "Exception while reading edge spec string\n";
+            break;
+          }
+        catch (ast2dot::Ast2DotParser::EmptyScStrException const& esse)
+          {
+            std::cerr << "Error: " << esse.what() << "\n";
+            std::cerr << "Exception while reading edge spec string\n";
+            break;
+          }
+        catch (ast2dot::Ast2DotParser::InvalidScStrException isse)
+          {
+            std::cerr << "Error: " << isse.what() << "\n";
+            std::cerr << "Exception while reading edge spec string\n";
+            break;
+          }
       }
   }
   
@@ -231,8 +239,8 @@ namespace clang_ast2dot
             cout_rdbuf = std::cout.rdbuf(ofs->rdbuf());
           }
 
-	// Start a directed graph
-	std::cout << "digraph {\n";
+        // Start a directed graph
+        std::cout << "digraph {\n";
 
         // First call for root with all empty/level 0
         create_dot(&std::cin, &std::cout, "", 0);

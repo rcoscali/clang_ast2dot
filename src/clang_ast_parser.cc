@@ -304,6 +304,7 @@ namespace clang_ast2dot
           // Start iteration
           boost::tokenizer<boost::escaped_list_separator<char> >::iterator it = tok.begin();
 
+	  _is_null = false;
           _name.clear();
           _label.clear();
           _address.clear();
@@ -333,6 +334,7 @@ namespace clang_ast2dot
 
           if (_name.compare("<<<NULL>>>") == 0)
 	    {
+	      _is_null = true;
 	      _name = null_to_name(-1);
 	      _label = null_to_label(_name);
 	    }
@@ -346,6 +348,9 @@ namespace clang_ast2dot
           ostr << " [shape=record,style=filled,fillcolor=lightgrey,label=\"{ ";
           ostr << escape_dot_string(_label) << "| ";
                 
+          if (!_address.empty())
+            ostr << _address << "| ";
+
           for (std::vector<std::string>::iterator svit = _props.begin();
                svit != _props.end();
                ++svit)
@@ -354,8 +359,6 @@ namespace clang_ast2dot
           ostr << "}\"];\n";
                 
           ret = new std::string(strbuf.str());
-
-          std::cerr << *ret;
         }
             
       return ret;
