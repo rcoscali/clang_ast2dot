@@ -1,2 +1,3 @@
-verbose=2
+verbose=1
 input=../examples/ast.txt
+output=../examples/ast.dot

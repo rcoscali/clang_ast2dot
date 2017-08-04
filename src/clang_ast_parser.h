@@ -18,6 +18,7 @@
  */
 
 #include <string>
+#include <iostream>
 #include <vector>
 
 /**
@@ -62,16 +63,16 @@ namespace clang_ast2dot
              * (ex. < with &lt;). Almost the same as json/html
              */
 
-	    /*
-	     * Provide a name for a null vertex.
-	     * If ix is -1, add a new null else return indexed one
-	     */
-	    std::string null_to_name(int const& ix = -1);
+            /*
+             * Provide a name for a null vertex.
+             * If ix is -1, add a new null else return indexed one
+             */
+            std::string null_to_name(int const& ix = -1);
 
-	    /*
-	     * Provide a label for a null vertex.
-	     */
-	    std::string null_to_label(std::string const&);
+            /*
+             * Provide a label for a null vertex.
+             */
+            std::string null_to_label(std::string const&);
 
             /**
              * Read properties of a vertex (until end of line)
@@ -109,29 +110,33 @@ namespace clang_ast2dot
             };
 
             /** Current string buffer */
-	    std::string& inbuf(void) { return _inbuf; }
+            std::string& inbuf(void) { return _inbuf; }
+
             /** Current edge string: relationship between one vertex and the previopus parent one */
-	    std::string& scstr(void) { return _scstr; }
+            std::string& scstr(void) { return _scstr; }
+
             /** Is vertex is null */
-	    bool is_null(void) { return _is_null; }
+            bool is_null(void) { return _is_null; }
+
             /** Name of the vertex */
-	    std::string& name(void) { return _name; }
+            std::string& name(void) { return _name; }
+
             /** Label of the vertex */
-	    std::string& label(void) { return _label; }
+            std::string& label(void) { return _label; }
+
             /** Address of the vertex (will be part of the vertex ID) */
-	    std::string& address(void) { return _address; }
+            std::string& address(void) { return _address; }
+
             /** Vector of string used for loading vertex properties */
-	    std::vector<std::string>& props(void) { return _props; }
-            /** Boolean property set to true if this vertex is a leaf  */
-	    bool is_leaf(void) {return _is_leaf;}
-	    
+            std::vector<std::string>& props(void) { return _props; }
+            
           private:
             // Line buffer
             std::string _inbuf;
             // Edges
             std::string _scstr;
-	    // Is null
-	    bool _is_null;
+            // Is null
+            bool _is_null;
             // Vertex name
             std::string _name;
             // Vertex label
@@ -140,11 +145,8 @@ namespace clang_ast2dot
             std::string _address;
             // Other props (class dependent)
             std::vector<std::string> _props;
-	    // Null vertex are numbered
-	    std::map<int, std::string> _name2null;
-            
-            // Vertex is leaf?
-            bool _is_leaf;
+            // Null vertex are numbered
+            std::map<int, std::string> _name2null;
         };
         
     } // ! namespace parser

@@ -15,31 +15,31 @@
 
 namespace clang_ast2dot
 {
-  namespace parser
-  {
-    class TestParser : public ::testing::Test
+    namespace parser
     {
-    public:
-      TestParser();
-      virtual ~TestParser();
+        class TestParser : public ::testing::Test
+        {
+          public:
+            TestParser();
+            virtual ~TestParser();
       
-      virtual void SetUp();
-      virtual void TearDown();
+            virtual void SetUp();
+            virtual void TearDown();
       
-      // It's important that PrintTo() is defined in the SAME
-      // namespace that defines Bar.  C++'s look-up rules rely on that.
-      void PrintTo(const TestParser&, ::std::ostream*);
+            // It's important that PrintTo() is defined in the SAME
+            // namespace that defines Bar.  C++'s look-up rules rely on that.
+            void PrintTo(const TestParser&, ::std::ostream*);
       
-      std::ifstream* _test_parser_testfile;
-      std::ifstream* _test_parser2_testfile;
-      std::ifstream* _test_parser3_testfile;
+            std::ifstream* _test_parser_testfile;
+            std::ifstream* _test_parser2_testfile;
+            std::ifstream* _test_parser3_testfile;
       
-    private:
-      std::string _TEST_FILE_NAME;
-      std::string _TEST_FILE_NAME2;
-      std::string _TEST_FILE_NAME3;
-    };
-  }
+          private:
+            std::string _TEST_FILE_NAME;
+            std::string _TEST_FILE_NAME2;
+            std::string _TEST_FILE_NAME3;
+        };
+    }
 }
 
 #endif /* ! _TEST_PARSER_H_ */

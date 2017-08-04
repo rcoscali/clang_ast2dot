@@ -11,7 +11,7 @@
 			<arguments>
 				<dictionary>
 					<key>org.eclipse.cdt.core.errorOutputParser</key>
-					<value>org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;</value>
+					<value>org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.append_environment</key>
@@ -23,11 +23,11 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.arguments</key>
-					<value>-j4</value>
+					<value>-C ../clang_ast2dot-eclipse</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.command</key>
-					<value>/usr/bin/make</value>
+					<value>/usr/sbin/ninja</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.location</key>
@@ -122,11 +122,6 @@
 			<name>[Targets]</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>src</name>
-			<type>2</type>
-			<location>/home/cohen/Sources/clang_ast2dot/src</location>
 		</link>
 		<link>
 			<name>[Subprojects]/Clang_Ast2Dot</name>
@@ -227,6 +222,11 @@
 			<name>[Targets]/[exe] clang_ast2dot/Source Files/clang_ast2dot.cc</name>
 			<type>1</type>
 			<location>/home/cohen/Sources/clang_ast2dot/src/clang_ast2dot.cc</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] clang_ast2dot/Source Files/clang_ast_parser.cc</name>
+			<type>1</type>
+			<location>/home/cohen/Sources/clang_ast2dot/src/clang_ast_parser.cc</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] test_parser/Source Files/clang_ast_parser.cc</name>

@@ -38,7 +38,7 @@
 // System config file
 #define AST2DOT_SYSTEM_CONFIG_FILE_PATH         "/etc/clang_ast2dotrc"
 // User config file
-#define AST2DOT_HOME_CONFIG_FILE_PATH           std::string(std::getenv("HOME")).append("/.clang_ast2dotrc").c_str()
+#define AST2DOT_HOME_CONFIG_FILE_PATH           std::string(::getenv("HOME")).append("/.clang_ast2dotrc").c_str()
 // Local directory config file
 #define AST2DOT_LOCAL_CONFIG_FILE_PATH          "./.clang_ast2dotrc"
 // Regex for matching ast dump relationship string
@@ -159,29 +159,25 @@ namespace clang_ast2dot
           }
         catch (ast2dot::Ast2DotParser::UnexpectedEofException const& ueofe)
           {
-            std::cerr << "Error: " << ueofe.what() << "\n";
-            std::cerr << "Exception while reading edge spec string\n";
-            break;
+              break;
           }
         catch (ast2dot::Ast2DotParser::EmptyScStrException const& esse)
           {
-            std::cerr << "Error: " << esse.what() << "\n";
-            std::cerr << "Exception while reading edge spec string\n";
-            break;
+              break;
           }
         catch (ast2dot::Ast2DotParser::InvalidScStrException isse)
           {
-            std::cerr << "Error: " << isse.what() << "\n";
-            std::cerr << "Exception while reading edge spec string\n";
             break;
           }
       }
+    return level;
   }
   
   /*
    *
    */
-  int Ast2DotMain::do_main(int opt_ind)
+  int
+  Ast2DotMain::do_main(int opt_ind)
   {
     if (opt_verbose >= 2)
       {
@@ -268,10 +264,15 @@ namespace clang_ast2dot
     // Close input file if necessary
     if (ifs)
       ifs->close();
+
+    return 0;
   }
+
 } // namespace clang_ast2dot
 
-static std::string var2option_mapper(std::string var_name) {
+static std::string
+var2option_mapper(std::string var_name)
+{
   // Only process env var starting with CLANG
   if (var_name.substr(0, 5).compare("CLANG") == 0) {
     if (opt_verbose >= 4)
@@ -304,7 +305,9 @@ static std::string var2option_mapper(std::string var_name) {
   return (std::string(""));
 }
 
-static void compute_verbose(std::vector<std::string> v) {
+static void
+compute_verbose(std::vector<std::string> v)
+{
   for (std::vector<std::string>::iterator it = v.begin(); it != v.end();
        it++) {
     if (opt_verbose >= 2)
