@@ -84,7 +84,7 @@ namespace clang_ast2dot
             _name.clear();
             _label.clear();
             _address.clear();
-            _props = std::vector<std::string>(5);;
+            _props = std::vector<std::string>(5);
             _is_null = false;
         }
         
