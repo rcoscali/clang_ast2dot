@@ -34,7 +34,7 @@
  * Constants definitions
  */
 // Version string
-#define AST2DOT_VERSION_STRING                  "0.0.1"
+#define AST2DOT_VERSION_STRING                  "1.0.0"
 // System config file
 #define AST2DOT_SYSTEM_CONFIG_FILE_PATH         "/etc/clang_ast2dotrc"
 // User config file
@@ -129,6 +129,7 @@ namespace clang_ast2dot
         if (!(parent_vertex.empty() || name.empty()))
           *os << "    " << parent_vertex << " -> " << name << " [style=\"solid\",color=black,weight=100,constraint=true];\n";
 
+        // Let's flush for easier debug
         os->flush();
 
         // Start next vertex relationship string
@@ -141,17 +142,21 @@ namespace clang_ast2dot
             // ("|-" for a vertex having still sibling or "`-" for a vertex being
             // the last child)
             scstr = parser.read_sibling_child_string(is);
+            // If the string is empty, we could be at end of file
             if (!scstr.empty())
               {
+            	// The next vertex level in the tree is hasl the size of the string
                 int new_level = scstr.length() / 2;
 
-                // We goes down deeper in tree
+                // We goes down deeper in tree, so call again with new_level, parent being current vertex
                 if (new_level > level)
                   new_level = create_dot(is, os, name, new_level);
 
+                // If we have a sibling vertex, call again with same level and same parent
                 if (new_level == level)
                   new_level = create_dot(is, os, parent_vertex, level);
 
+                // If level is less, let's go down (return new_level)
                 if (new_level < level)
                   // Get back up in tree
                   return new_level;
@@ -165,7 +170,7 @@ namespace clang_ast2dot
           {
               break;
           }
-        catch (ast2dot::Ast2DotParser::InvalidScStrException isse)
+        catch (ast2dot::Ast2DotParser::InvalidScStrException const& isse)
           {
             break;
           }
