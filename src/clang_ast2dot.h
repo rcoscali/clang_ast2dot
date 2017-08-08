@@ -43,9 +43,9 @@ namespace clang_ast2dot
     Ast2DotMain(int, char *[]);
     virtual ~Ast2DotMain();
 
-    po::variables_map& vm(void);
-    int do_main(int);
-    int create_dot(std::istream *, std::ostream *, std::string const&, int);
+    virtual po::variables_map& vm(void);
+    virtual int do_main(int);
+    virtual int create_dot(std::istream *, std::ostream *, std::string const&, int);
     
   private:
     int _argc;

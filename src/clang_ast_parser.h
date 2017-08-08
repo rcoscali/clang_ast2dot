@@ -48,15 +48,15 @@ namespace clang_ast2dot
              * Read the string that represent the relationship (edge) between
              * vertex of one line and the vertex of the next line
              */
-            std::string& read_sibling_child_string(std::istream *is = &std::cin);
+            virtual std::string& read_sibling_child_string(std::istream *is = &std::cin);
 
             /**
              * Replace special quoting string with quoted one
              */
-            std::string& quote_special_quotes(std::string&,
-                                              std::string const&,
-                                              std::string const&,
-                                              std::string*&);
+            virtual std::string& quote_special_quotes(std::string&,
+                                                      std::string const&,
+                                                      std::string const&,
+                                                      std::string*&);
 
             /*
              * Escape vertex properties strings special characters
@@ -67,17 +67,17 @@ namespace clang_ast2dot
              * Provide a name for a null vertex.
              * If ix is -1, add a new null else return indexed one
              */
-            std::string null_to_name(int const& ix = -1);
+            virtual std::string null_to_name(int const& ix = -1);
 
             /*
              * Provide a label for a null vertex.
              */
-            std::string null_to_label(std::string const&);
+            virtual std::string null_to_label(std::string const&);
 
             /**
              * Read properties of a vertex (until end of line)
              */
-            std::string* read_vertex_props(std::istream *, std::ostream *);
+            virtual std::string* read_vertex_props(std::istream *, std::ostream *);
 
             /**
              * Empty relationship string exception
@@ -110,25 +110,25 @@ namespace clang_ast2dot
             };
 
             /** Current string buffer */
-            std::string& inbuf(void) { return _inbuf; }
+            virtual std::string& inbuf(void) { return _inbuf; }
 
             /** Current edge string: relationship between one vertex and the previopus parent one */
-            std::string& scstr(void) { return _scstr; }
+            virtual std::string& scstr(void) { return _scstr; }
 
             /** Is vertex is null */
-            bool is_null(void) { return _is_null; }
+            virtual bool is_null(void) { return _is_null; }
 
             /** Name of the vertex */
-            std::string& name(void) { return _name; }
+            virtual std::string& name(void) { return _name; }
 
             /** Label of the vertex */
-            std::string& label(void) { return _label; }
+            virtual std::string& label(void) { return _label; }
 
             /** Address of the vertex (will be part of the vertex ID) */
-            std::string& address(void) { return _address; }
+            virtual std::string& address(void) { return _address; }
 
             /** Vector of string used for loading vertex properties */
-            std::vector<std::string>& props(void) { return _props; }
+            virtual std::vector<std::string>& props(void) { return _props; }
             
           private:
             // Line buffer
