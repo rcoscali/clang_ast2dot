@@ -1,0 +1,6 @@
+V1 0x0001 <Vertex number 1>
+|-V11 0x0002 <<Vertex number 2>>
+|-V12 0x0003 <<Vertex number 3>>
+| |-v121 0x0004 <<Vertex number 4>>
+| `-v122 0x0005 <<Vertex number 5>>
+`-v13 0x0006 <<Vertex number 6>>
