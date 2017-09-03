@@ -1,0 +1,11 @@
+*~
+clang_ast2dot
+cmake_install.cmake
+libgtestall.a
+test_parser
+build.ninja
+rules.ninja
+CMakeCache.txt
+CMakeFiles/*
+.ninja_deps
+.ninja_log

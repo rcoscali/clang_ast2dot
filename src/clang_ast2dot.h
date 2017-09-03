@@ -48,6 +48,7 @@ namespace clang_ast2dot
     virtual int create_dot(std::istream *, std::ostream *, std::string const&, int);
     
   private:
+    clang_ast2dot::parser::Ast2DotParser _parser;
     int _argc;
     std::vector<std::pair<int, std::string> > _argv;
     po::variables_map _vm;

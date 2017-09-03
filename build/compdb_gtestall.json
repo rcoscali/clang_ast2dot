@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/usr/local/src/data2/misc/LLVM/clang_ast2dot/build",
+    "command": "/usr/bin/c++    -isystem ../googletest/googletest/include -I../googletest/googletest -g   -std=c++11 -MD -MT CMakeFiles/gtestall.dir/googletest/googletest/src/gtest-all.cc.o -MF CMakeFiles/gtestall.dir/googletest/googletest/src/gtest-all.cc.o.d -o CMakeFiles/gtestall.dir/googletest/googletest/src/gtest-all.cc.o -c /usr/local/src/data2/misc/LLVM/clang_ast2dot/googletest/googletest/src/gtest-all.cc",
+    "file": "../googletest/googletest/src/gtest-all.cc"
+  }
+]

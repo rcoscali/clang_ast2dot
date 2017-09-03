@@ -1,0 +1,35 @@
+TranslationUnitDecl 0x56046e42bbc0 <<invalid sloc>> <invalid sloc>
+|-TypedefDecl 0x56046e42c150 <<invalid sloc>> <invalid sloc> implicit __int128_t '__int128'
+| `-BuiltinType 0x56046e42be30 '__int128'
+|-public '__gnu_cxx::new_allocator<int>':'class __gnu_cxx::new_allocator<int>'
+|-public '__gnu_cxx::new_allocator<int>':'class __gnu_cxx::new_allocator<int>'
+|-public '__gnu_cxx::new_allocator<int>':'class __gnu_cxx::new_allocator<int>'
+|-public '__gnu_cxx::new_allocator<int>':'class __gnu_cxx::new_allocator<int>'
+`-public '__gnu_cxx::new_allocator<int>':'class __gnu_cxx::new_allocator<int>'
+   |-TemplateArgument type 'int'
+   |-CXXRecordDecl 0x56046f4fce00 prev 0x56046f4fa368 <col:5, col:11> col:11 implicit class allocator
+   |-AccessSpecDecl 0x56046f4fce98 <line:110:4, col:10> col:4 public
+   |-TypedefDecl 0x56046f4fcec0 <line:111:7, col:26> col:26 referenced size_type 'std::size_t':'unsigned long'
+   | `-TypedefType 0x56046e5687c0 'std::size_t' sugar
+   |   |-Typedef 0x56046e464ca8 'size_t'
+   |   `-BuiltinType 0x56046e42bd70 'unsigned long'
+   `-ClassTemplateSpecializationDecl 0x56046f9be868 <line:107:3, line:142:5> line:108:11 class allocator definition
+     |-public '__gnu_cxx::new_allocator<pair<const int, basic_string<char> > >':'class __gnu_cxx::new_allocator<struct std::pair<const int, class std::__cxx11::basic_string<char> > >'
+     |-TemplateArgument type 'struct std::pair<const int, class std::__cxx11::basic_string<char> >'
+     |-CXXRecordDecl 0x56046f9c11c0 prev 0x56046f9be868 <col:5, col:11> col:11 implicit class allocator
+     |-AccessSpecDecl 0x56046f9c1258 <line:110:4, col:10> col:4 public
+     |-TypedefDecl 0x56046f9c1280 <line:111:7, col:26> col:26 referenced size_type 'std::size_t':'unsigned long'
+     | `-TypedefType 0x56046e5687c0 'std::size_t' sugar
+     |   |-Typedef 0x56046e464ca8 'size_t'
+     |   `-BuiltinType 0x56046e42bd70 'unsigned long'
+     |-TypedefDecl 0x56046f9c12d8 <line:112:7, col:26> col:26 referenced difference_type 'std::ptrdiff_t':'long'
+     | `-TypedefType 0x56046e569230 'std::ptrdiff_t' sugar
+     |   |-Typedef 0x56046e464d18 'ptrdiff_t'
+     |   `-BuiltinType 0x56046e42bcd0 'long'
+     `-TypedefDecl 0x56046f9c1368 <line:113:7, col:26> col:26 referenced pointer 'struct std::pair<const int, class std::__cxx11::basic_string<char> > *'
+       `-PointerType 0x56046f9c1330 'struct std::pair<const int, class std::__cxx11::basic_string<char> > *'
+         `-SubstTemplateTypeParmType 0x56046f9bf210 'struct std::pair<const int, class std::__cxx11::basic_string<char> >' sugar
+           |-TemplateTypeParmType 0x56046e72e3b0 '_Tp' dependent depth 0 index 0
+           | `-TemplateTypeParm 0x56046e72e370 '_Tp'
+           `-RecordType 0x56046f9be720 'struct std::pair<const int, class std::__cxx11::basic_string<char> >'
+             `-ClassTemplateSpecialization 0x56046f9be618 'pair'

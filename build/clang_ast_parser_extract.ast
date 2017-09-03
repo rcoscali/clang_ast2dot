@@ -1,0 +1,36 @@
+TranslationUnitDecl 0x56046e42bbc0 <<invalid sloc>> <invalid sloc>
+`-NamespaceDecl 0x56046f905c38 prev 0x56046f8f2a18 </usr/include/boost/integer_fwd.hpp:20:1, line:184:1> line:20:11 boost
+  |-original Namespace 0x56046ebde7d0 'boost'
+  |-TypedefDecl 0x56046f905d60 <line:29:6, col:31> col:31 referenced static_min_max_unsigned_type 'boost::uintmax_t':'unsigned long'
+  | `-ElaboratedType 0x56046f905cf0 'boost::uintmax_t' sugar
+  |   `-TypedefType 0x56046f905cd0 'uintmax_t' sugar
+  |     |-Typedef 0x56046f6d8108 'uintmax_t'
+  |     `-BuiltinType 0x56046e42bd70 'unsigned long'
+  |-TypedefDecl 0x56046f905e40 <line:30:6, col:31> col:31 referenced static_min_max_signed_type 'boost::intmax_t':'long'
+  | `-ElaboratedType 0x56046f905dd0 'boost::intmax_t' sugar
+  |   `-TypedefType 0x56046f8ffbb0 'intmax_t' sugar
+  |     |-Typedef 0x56046f6d8098 'intmax_t'
+  |     `-BuiltinType 0x56046e42bcd0 'long'
+  |-TypedefDecl 0x56046f905ee8 <line:31:6, col:31> col:31 referenced static_log2_argument_type 'boost::uintmax_t':'unsigned long'
+  | `-ElaboratedType 0x56046f905cf0 'boost::uintmax_t' sugar
+  |   `-TypedefType 0x56046f905cd0 'uintmax_t' sugar
+  |     |-Typedef 0x56046f6d8108 'uintmax_t'
+  |     `-BuiltinType 0x56046e42bd70 'unsigned long'
+  |-TypedefDecl 0x56046f905f58 <line:32:6, col:31> col:31 referenced static_log2_result_type 'int'
+  | `-BuiltinType 0x56046e42bcb0 'int'
+  `-ClassTemplateDecl 0x56046f9060c8 <line:42:1, line:43:11> col:11 integer_traits
+    |-TemplateTypeParmDecl 0x56046f905fb0 <line:42:12, col:18> col:18 class depth 0 index 0 T
+    |-CXXRecordDecl 0x56046f906030 <line:43:5, col:11> col:11 class integer_traits
+    |-ClassTemplateSpecialization 0x56046f90deb0 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f90ea38 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f90f670 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f9102b0 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f910f18 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f911b50 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f9127a0 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f913420 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f914040 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f914cc0 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f9158e0 'integer_traits'
+    |-ClassTemplateSpecialization 0x56046f928450 'integer_traits'
+    `-ClassTemplateSpecialization 0x56046f929160 'integer_traits'

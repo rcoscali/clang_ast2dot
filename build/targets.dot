@@ -1,0 +1,47 @@
+digraph ninja {
+rankdir="LR"
+node [fontsize=10, shape=box, height=0.25]
+edge [fontsize=10]
+"0x55f0587aed20" [label="all"]
+"0x55f0587aecb0" [label="phony", shape=ellipse]
+"0x55f0587aecb0" -> "0x55f0587aed20"
+"0x55f0587abe60" -> "0x55f0587aecb0" [arrowhead=none]
+"0x55f0587acc90" -> "0x55f0587aecb0" [arrowhead=none]
+"0x55f0587ae210" -> "0x55f0587aecb0" [arrowhead=none]
+"0x55f0587abe60" [label="libgtestall.a"]
+"0x55f0587ab480" -> "0x55f0587abe60" [label=" CXX_STATIC_LIBRARY_LINKER__gtestall"]
+"0x55f0587ab480" [label="CMakeFiles/gtestall.dir/googletest/googletest/src/gtest-all.cc.o"]
+"0x55f0587ab550" -> "0x55f0587ab480" [label=" CXX_COMPILER__gtestall"]
+"0x55f0587ab550" [label="../googletest/googletest/src/gtest-all.cc"]
+"0x55f0587acc90" [label="clang_ast2dot"]
+"0x55f0587ad030" [label="CXX_EXECUTABLE_LINKER__clang_ast2dot", shape=ellipse]
+"0x55f0587ad030" -> "0x55f0587acc90"
+"0x55f0587ac390" -> "0x55f0587ad030" [arrowhead=none]
+"0x55f0587ac9c0" -> "0x55f0587ad030" [arrowhead=none]
+"0x55f0587ac390" [label="CMakeFiles/clang_ast2dot.dir/src/clang_ast2dot.cc.o"]
+"0x55f0587ac470" -> "0x55f0587ac390" [label=" CXX_COMPILER__clang_ast2dot"]
+"0x55f0587ac470" [label="../src/clang_ast2dot.cc"]
+"0x55f0587ac9c0" [label="CMakeFiles/clang_ast2dot.dir/src/clang_ast_parser.cc.o"]
+"0x55f0587aca80" -> "0x55f0587ac9c0" [label=" CXX_COMPILER__clang_ast2dot"]
+"0x55f0587aca80" [label="../src/clang_ast_parser.cc"]
+"0x55f0587ae210" [label="test_parser"]
+"0x55f0587aeaf0" [label="CXX_EXECUTABLE_LINKER__test_parser", shape=ellipse]
+"0x55f0587aeaf0" -> "0x55f0587ae210"
+"0x55f0587adb30" -> "0x55f0587aeaf0" [arrowhead=none]
+"0x55f0587ae1b0" -> "0x55f0587aeaf0" [arrowhead=none]
+"0x55f0587abe60" -> "0x55f0587aeaf0" [arrowhead=none]
+"0x55f0587abe60" -> "0x55f0587aeaf0" [arrowhead=none style=dotted]
+"0x55f0587adb30" [label="CMakeFiles/test_parser.dir/tests/test_parser.cc.o"]
+"0x55f0587adea0" [label="CXX_COMPILER__test_parser", shape=ellipse]
+"0x55f0587adea0" -> "0x55f0587adb30"
+"0x55f0587adb90" -> "0x55f0587adea0" [arrowhead=none]
+"0x55f0587ad830" -> "0x55f0587adea0" [arrowhead=none style=dotted]
+"0x55f0587adb90" [label="../tests/test_parser.cc"]
+"0x55f0587ad830" [label="cmake_order_depends_target_test_parser"]
+"0x55f0587abe60" -> "0x55f0587ad830" [label=" phony"]
+"0x55f0587ae1b0" [label="CMakeFiles/test_parser.dir/src/clang_ast_parser.cc.o"]
+"0x55f0587ae570" [label="CXX_COMPILER__test_parser", shape=ellipse]
+"0x55f0587ae570" -> "0x55f0587ae1b0"
+"0x55f0587aca80" -> "0x55f0587ae570" [arrowhead=none]
+"0x55f0587ad830" -> "0x55f0587ae570" [arrowhead=none style=dotted]
+}

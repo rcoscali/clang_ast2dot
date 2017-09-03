@@ -96,9 +96,6 @@ namespace clang_ast2dot
   int
   Ast2DotMain::create_dot(std::istream* is, std::ostream* os, std::string const& parent_vertex, int level)
   {
-    // AST dump parser
-    ast2dot::Ast2DotParser parser;
-    
     /* 
      * Cout eventually sends to output file and cin gets from input file
      */
@@ -110,14 +107,14 @@ namespace clang_ast2dot
         
         // Parse vertex and return the vertex string for the .dot file
         // Fields in Parser instance are initialized with each part
-        std::string *vertex = parser.read_vertex_props(is, os);
+        std::string *vertex = _parser.read_vertex_props(is, os);
 
         // Get the name (= Vertex name + vertex address)
         if (!vertex->empty())
           {
-            name = parser.name();
-            if (!parser.is_null())
-              name.append(std::string("_").append(parser.address()));
+            name = _parser.name();
+            if (!_parser.is_null())
+              name.append(std::string("_").append(_parser.address()));
           }
 
         // Out the vertex string
@@ -141,7 +138,7 @@ namespace clang_ast2dot
             // Returns the full string from beginning of line until the dash '-'
             // ("|-" for a vertex having still sibling or "`-" for a vertex being
             // the last child)
-            scstr = parser.read_sibling_child_string(is);
+            scstr = _parser.read_sibling_child_string(is);
             // If the string is empty, we could be at end of file
             if (!scstr.empty())
               {

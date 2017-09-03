@@ -1,0 +1,31 @@
+digraph {
+    TranslationUnitDecl_0x56046e42bbc0 [shape=record,style=filled,fillcolor=lightgrey,label="{ TranslationUnitDecl| 0x56046e42bbc0| &lt;&lt;invalid&nbsp;sloc&gt;&gt;| &lt;invalid| sloc&gt;| }"];
+    TypedefDecl_0x56046e42c150 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl| 0x56046e42c150| &lt;&lt;invalid&nbsp;sloc&gt;&gt;| &lt;invalid| sloc&gt;| implicit| __int128_t| '__int128'| }"];
+    TranslationUnitDecl_0x56046e42bbc0 -> TypedefDecl_0x56046e42c150 [style="solid",color=black,weight=100,constraint=true];
+    BuiltinType_0x56046e42be30 [shape=record,style=filled,fillcolor=lightgrey,label="{ BuiltinType| 0x56046e42be30| '__int128'| }"];
+    TypedefDecl_0x56046e42c150 -> BuiltinType_0x56046e42be30 [style="solid",color=black,weight=100,constraint=true];
+    TypedefDecl_0x56046e42c1c0 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl| 0x56046e42c1c0| &lt;&lt;invalid&nbsp;sloc&gt;&gt;| &lt;invalid| sloc&gt;| implicit| __uint128_t| 'unsigned| __int128'| }"];
+    TranslationUnitDecl_0x56046e42bbc0 -> TypedefDecl_0x56046e42c1c0 [style="solid",color=black,weight=100,constraint=true];
+    BuiltinType_0x56046e42be50 [shape=record,style=filled,fillcolor=lightgrey,label="{ BuiltinType| 0x56046e42be50| 'unsigned| __int128'| }"];
+    TypedefDecl_0x56046e42c1c0 -> BuiltinType_0x56046e42be50 [style="solid",color=black,weight=100,constraint=true];
+    TypedefDecl_0x56046e42c508 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl| 0x56046e42c508| &lt;&lt;invalid&nbsp;sloc&gt;&gt;| &lt;invalid| sloc&gt;| implicit| __NSConstantString| 'struct| __NSConstantString_tag'| }"];
+    TranslationUnitDecl_0x56046e42bbc0 -> TypedefDecl_0x56046e42c508 [style="solid",color=black,weight=100,constraint=true];
+    RecordType_0x56046e42c2b0 [shape=record,style=filled,fillcolor=lightgrey,label="{ RecordType| 0x56046e42c2b0| 'struct| __NSConstantString_tag'| }"];
+    TypedefDecl_0x56046e42c508 -> RecordType_0x56046e42c2b0 [style="solid",color=black,weight=100,constraint=true];
+    CXXRecord_0x56046e42c218 [shape=record,style=filled,fillcolor=lightgrey,label="{ CXXRecord| 0x56046e42c218| '__NSConstantString_tag'| }"];
+    RecordType_0x56046e42c2b0 -> CXXRecord_0x56046e42c218 [style="solid",color=black,weight=100,constraint=true];
+    TypedefDecl_0x56046e42c5a0 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl| 0x56046e42c5a0| &lt;&lt;invalid&nbsp;sloc&gt;&gt;| &lt;invalid| sloc&gt;| implicit| __builtin_ms_va_list| 'char| *'| }"];
+    TranslationUnitDecl_0x56046e42bbc0 -> TypedefDecl_0x56046e42c5a0 [style="solid",color=black,weight=100,constraint=true];
+    PointerType_0x56046e42c560 [shape=record,style=filled,fillcolor=lightgrey,label="{ PointerType| 0x56046e42c560| 'char| *'| }"];
+    TypedefDecl_0x56046e42c5a0 -> PointerType_0x56046e42c560 [style="solid",color=black,weight=100,constraint=true];
+    BuiltinType_0x56046e42bc50 [shape=record,style=filled,fillcolor=lightgrey,label="{ BuiltinType| 0x56046e42bc50| 'char'| }"];
+    PointerType_0x56046e42c560 -> BuiltinType_0x56046e42bc50 [style="solid",color=black,weight=100,constraint=true];
+    TypedefDecl_0x56046e464b40 [shape=record,style=filled,fillcolor=lightgrey,label="{ TypedefDecl| 0x56046e464b40| &lt;&lt;invalid&nbsp;sloc&gt;&gt;| &lt;invalid| sloc&gt;| implicit| referenced| __builtin_va_list| 'struct| __va_list_tag| [1]'| }"];
+    TranslationUnitDecl_0x56046e42bbc0 -> TypedefDecl_0x56046e464b40 [style="solid",color=black,weight=100,constraint=true];
+    ConstantArrayType_0x56046e42c880 [shape=record,style=filled,fillcolor=lightgrey,label="{ ConstantArrayType| 0x56046e42c880| 'struct| __va_list_tag| [1]'| 1| | }"];
+    TypedefDecl_0x56046e464b40 -> ConstantArrayType_0x56046e42c880 [style="solid",color=black,weight=100,constraint=true];
+    RecordType_0x56046e42c690 [shape=record,style=filled,fillcolor=lightgrey,label="{ RecordType| 0x56046e42c690| 'struct| __va_list_tag'| }"];
+    ConstantArrayType_0x56046e42c880 -> RecordType_0x56046e42c690 [style="solid",color=black,weight=100,constraint=true];
+    CXXRecord_0x56046e42c5f8 [shape=record,style=filled,fillcolor=lightgrey,label="{ CXXRecord| 0x56046e42c5f8| '__va_list_tag'| }"];
+    RecordType_0x56046e42c690 -> CXXRecord_0x56046e42c5f8 [style="solid",color=black,weight=100,constraint=true];
+}
